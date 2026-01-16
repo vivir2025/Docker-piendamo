@@ -1,0 +1,139 @@
+<!-- id para libreria de particulas -->
+<div id="particles-js"> </div>
+<?php
+defined('BASEPATH') or exit('No direct script access allowed');
+?>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>IPS FNPV | INICIO DE SESION</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script src="<?= base_url("assets/bootstrap/js/jquery.min.js") ?>"></script>
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url("assets/bootstrap/css/datatables.min.css"); ?>">
+  <script type="text/javascript" src="<?= base_url("assets/bootstrap/js/bootstrap.min.js") ?>"></script>
+
+</head>
+
+
+<!-- Fila exterior -->
+
+<div  id=contenedor >
+  <?php echo form_open_multipart('CLogin/login'); ?>                                                             
+        <?php if (isset($msg)) { ?>
+          <!-- Presentacion del mensajes de error--><br>
+          <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong> Error !</strong> <?= $msg ?>
+          </div>
+        <?php } ?>   
+
+<!-- border del contenedor y color-->
+
+<div style="border: 1px #FFFFFF; border-style: solid double; padding: 0 1rem; margin: 10rem;">
+  <div class="row text-white">    
+
+    <!-- Linea para configurar imagen -->
+
+    <img width="315" height="345" src="http://45.167.125.238/ips/assets/img/login.png">          
+      <div  class="card-body text-center " >
+        <h1>Inicio de sesión</h1>
+       <br>                    
+        <label class= "text-left" >
+            USUARIO
+          <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+            <input type="text" placeholder="Usuario" required="required" class="form-control" id="login" name="log">
+          </div>
+        </label>
+        <br>
+        <label class= "text-left" >
+          CONTRASEÑA
+          <div class="input-group">
+            <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+            <input type="password" placeholder="Contraseña" required="required" class="form-control" id="pwd" name="pwd">
+          </div>
+        </label>
+      <br>
+      <br> 
+      <button type="submit" class="ov-btn-slide-left">Ingresar al Sistema</button>
+   
+  </div>         
+</div>    
+
+</html>
+
+
+<!-- color de fondo  --> 
+
+<!-- imprtacion y ejecucion de libreria de particulas  --> 
+
+<script src="http://45.167.125.238/ips/assets/particles.js-master/particles.min.js" > </script>
+<script src="http://45.167.125.238/ips/assets/particles.js-master/app.js " > </script>
+
+
+<!-- tamo de la pagina   --> 
+
+<style> #particles-js
+{
+  height:100vh ;
+  width: 100%;
+  position: fixed;
+  z-index: -1;
+  background:linear-gradient(20deg, #2a327d,#2a327d, #166a28, #166a28, #2a327d,#2a327d);
+} 
+
+ 
+</style>
+
+<style>
+  #contenedor {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
+
+
+<style>.ov-btn-slide-left {
+  background: #fff; /* color de fondo */
+  color: #0A37BA; ; /* color de fuente */
+  border: 2px solid #4741d7; /* tamaño y color de borde */
+  padding: 12px 15px;
+  border-radius: 15px; /* redondear bordes */
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  display: inline-block;
+}
+.ov-btn-slide-left:hover {
+  color: #fff; /* color de fuente hover */
+}
+.ov-btn-slide-left::after {
+  content: "";
+  background: #4741d7; /* color de fondo hover */
+  position: absolute;
+  z-index: -1;
+  padding: 16px 20px;
+  display: block;
+  top: 0;
+  bottom: 0;
+  left: -100%;
+  right: 100%;
+  -webkit-transition: all 0.35s;
+  transition: all 0.35s;
+}
+.ov-btn-slide-left:hover::after {
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  -webkit-transition: all 0.35s;
+  transition: all 0.35s;
+}
+ </style>
+
+

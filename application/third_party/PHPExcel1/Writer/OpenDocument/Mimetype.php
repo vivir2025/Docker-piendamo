@@ -1,0 +1,41 @@
+<?php
+
+/**
+ * PHPExcel1
+ *
+ * PHPExcel1_Writer_OpenDocument_Mimetype
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ * @category   PHPExcel1
+ * @package    PHPExcel1_Writer_OpenDocument
+ * @copyright  Copyright (c) 2006 - 2015 PHPExcel1 (http://www.codeplex.com/PHPExcel1)
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
+ * @version    ##VERSION##, ##DATE##
+ */
+class PHPExcel1_Writer_OpenDocument_Mimetype extends PHPExcel1_Writer_OpenDocument_WriterPart
+{
+    /**
+     * Write mimetype to plain text format
+     *
+     * @param     PHPExcel1    $pPHPExcel1
+     * @return     string         XML Output
+     * @throws     PHPExcel1_Writer_Exception
+     */
+    public function write(PHPExcel1 $pPHPExcel1 = null)
+    {
+        return 'application/vnd.oasis.opendocument.spreadsheet';
+    }
+}

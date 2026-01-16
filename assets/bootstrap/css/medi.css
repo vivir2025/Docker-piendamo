@@ -1,0 +1,52 @@
+fieldset {
+    border: 1px ridge #0f0fef;
+    /* Borde */
+}
+
+legend {
+    text-align: left;
+    /* Puedes cambiarlo por center o right */
+    width: inherit;
+    /* Or auto */
+    padding: 10px;
+    /* To give a bit of padding on the left and right */
+    border-bottom: none;
+    font-size: 12px;
+}
+.border {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    padding: 20px;
+    border: 1px ridge #0f0fef;
+    
+   
+  
+}
+.img {
+    width: 100px;
+}
+.text {
+    display: flex;
+ flex-direction: column;
+ justify-content: center;
+}
+.texts {
+    text-align: center;
+}
+.firma {
+    display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  text-align: center;
+}
+.firma1 {
+    display: flex;
+    justify-content: end;
+    justify-items: end;
+    padding: 10px;
+}
+.heads {
+    font-size: 15px;
+    text-align: center;
+}

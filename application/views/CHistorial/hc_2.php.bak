@@ -1,0 +1,665 @@
+<style type="text/css">
+fieldset {
+    border: 1px ridge #0f0fef;
+    /* Borde */
+}
+
+legend {
+    text-align: left;
+    /* Puedes cambiarlo por center o right */
+    width: inherit;
+    /* Or auto */
+    padding: 0 10px;
+    /* To give a bit of padding on the left and right */
+    border-bottom: none;
+    font-size: 16px;
+}
+</style>
+
+<div class="mx-auto" style="width: 1300px;">
+    <?php foreach ($dato_historia as $h) { ?>
+                <div style="border: ridge #0f0fef 1px; text-align:center">
+
+                <div class="form-row" style="margin: 10px;">
+                    <div class="form-group col-md-4">
+
+                        <tr>
+                            <td width="156" rowspan="7" align="center" valign="middle"><img src="<?= base_url("assets/img/logo.png"); ?>" width="100px" /></td>
+                        </tr>
+
+                    </div>
+                    <div class="form-group col-md-4" style=" margin: auto;">
+
+                        <tr height="">
+                            <td height="">
+                                <div align="center">
+                                    <h3>FUNDACIÓN NACER PARA<br>VIVIR IPS</h3>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr height="">
+                            <td height="">
+                                <div align="center"><small>CONTROL PROGRAMA DE GESTION DEL RIESGO CARDIO RENAL</small>
+                                    <br>
+                            <small><?= $dato_historia[0]->citFecha ?></small></div>
+                            </td>
+                        </tr>
+                    </div>
+
+
+                    <div class="form-group col-md-4">
+
+                        <tr>
+                            <td width="156" rowspan="7" align="center" valign="middle"><img src="<?= base_url("assets/img/logo.png"); ?>" width="100px" /></td>
+                        </tr>
+
+                    </div>
+
+
+                </div>
+            </div>
+            <br><br>
+
+        <fieldset>
+            <legend>DATOS PACIENTE</legend>
+            <div class="form-row" style="text-align:center">
+                <div class="form-group col-md-2">
+                    <strong>NOMBRE</strong><br>
+                    <?php
+                    echo $h->nom_abreviacion . " " . $h->pacDocumento . "<br>";
+                     echo $h->pacNombre . " " . $h->pacNombre2 . " " . $h->pacApellido. " " . $h->pacApellido2; ?>
+                </div>
+                <div class="form-group col-md-2">
+                    <strong>FECHA NACIMIENTO Y EDAD</strong><br>
+                    <?php echo $h->pacFecNacimiento . "<br>";
+                    list($anio, $mes, $dia) = explode("-", $h->pacFecNacimiento);
+                    $anio_dif = date("Y") - $anio;
+                    $mes_dif = date("m") - $mes;
+                    $dia_dif = date("d") - $dia;
+
+                    if ($dia_dif < 0 || $mes_dif < 0) {
+                        $anio_dif--;
+                        //return $anio_dif;
+                    }
+
+                    echo $anio_dif . "Años";
+                    ?>
+                </div>
+                <div class="form-group col-md-2">
+                    <strong>SEXO</strong><br>
+                    <?php if ($h->pacSexo == "M") {
+                        echo "MASCULINO";
+                    } else {
+                        echo "FEMENINO";
+                    } ?>
+                </div>
+                <div class="form-group col-md-2">
+                    <strong>ESATDO CIVIL</strong><br>
+                    <?php echo $h->pacEstCivil; ?>
+                </div>
+                <div class="form-group col-md-2">
+                    <strong>TELEFONO</strong><br>
+                    <?php echo $h->pacTelefono; ?>
+                </div>
+                <div class="form-group col-md-2">
+                    <strong>DIRECCION</strong><br>
+                    <?php
+                    echo $h->depNombre . " - " . $h->munNombre . "<br>" . $h->pacDireccion; ?>
+                </div>
+            </div>
+            <div class="form-row" style="text-align:center">
+                <div class="form-group col-md-3">
+                    <strong>ASEGURADORA</strong><br>
+                    <?php
+                    echo $h->empNombre; ?>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <strong>REGIMEN</strong><br>
+                    <?php echo $h->regNombre; ?>
+                </div>
+                <div class="form-group col-md-3">
+                    <strong>OCUPACION</strong><br>
+                    <?php echo $h->ocuNombre; ?>
+                </div>
+                <div class="form-group col-md-3">
+                    <strong>BRIGADA</strong><br>
+                    <?php echo $h->zonNombre; ?>
+                </div>
+            </div>
+
+        </fieldset><br>
+        <fieldset>
+            <legend>ACUDIENTE</legend>
+            <div class="form-row" style="margin: 10px; text-align:center">
+                <div class="form-group col-md-4">
+                    <strong>NOMBRE ACOMPAÑANTE</strong><br>
+                    <?php echo $h->hcAcompanante; ?>
+
+                </div>
+                <div class="form-group col-md-4">
+                    <strong>PARENTESCO</strong><br>
+                    <?php echo $h->hcAcuParentesco; ?>
+
+                </div>
+                <div class="form-group col-md-4">
+                    <strong>TELEFONO</strong><br>
+                    <?php echo $h->hcAcuTelefono; ?>
+                </div>
+            </div>
+
+        </fieldset><br>
+
+
+        <fieldset>
+            <legend>HISTORIA CLINICA</legend>
+
+            <div style="margin: 10px;">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <strong>PRESION ARTERIAL SISTOLICA: </strong>
+                        <?php echo $h->hcPresionArterialSistolicaSentadoPie; ?>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <strong>PRESION ARTERIAL DISTOLICA: </strong>
+                        <?php echo $h->hcPresionArterialDistolicaSentadoPie; ?>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <strong>FRECUENCIA CARDIACA: </strong>
+                        <?php echo $h->hcFrecuenciaCardiaca; ?>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <strong>FRECUENCIA RESPIRATORIA: </strong>
+                        <?php echo $h->hcFrecuenciaRespiratoria; ?>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <strong>PERIMETRO ABDOMINAL: </strong>
+                        <?php echo $h->hcObsPerimetroAbdominal; ?>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <strong>INSULINO REQUIRIENTE: </strong>
+                        <?php echo $h->insulina_requiriente; ?>
+
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <strong>PESO KG: </strong>
+                        <?php echo $h->hcPeso; ?>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <strong>TALLA CM: </strong>
+                        <?php echo $h->hcTalla; ?>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <strong>IMC: </strong>
+                        <?php echo $h->hcIMC; ?>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <strong>CLASIFICACION: </strong>
+                        <?php echo $h->hcClasificacion; ?>
+                    </div>
+                </div>
+                <div class="form-row">
+
+                    <div class="form-group col-md-6">
+                        <strong>TASA DE FILTRACION GLOMERULAR CKD-EPI: </strong>
+                        <?php echo $h->tasa_filtracion_glomerular_ckd_epi; ?>
+
+                    </div>
+                    <div class="form-group col-md-6">
+                        <strong>TASA DE FILTRACION GLOMERULAR Cockcroft-Gault: </strong>
+                        <?php echo $h->tasa_filtracion_glomerular_gockcroft_gault; ?>
+                    </div>
+                </div>
+            </div>
+        </fieldset><br>
+
+        <fieldset>
+            <legend>EXAMEN FISICO POR SISTEMA</legend>
+
+            <div style="margin: 10px;">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <strong>CABEZA: </strong>
+                        <?php echo $h->hcEfCabeza; ?>
+
+                    </div>
+                    <div class="form-group col-md-6">
+                        <strong>OJOS (AGUDEZA VISUAL): </strong>
+                        <?php echo $h->hcAgudezaVisual; ?>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <strong>OIDOS: </strong>
+                        <?php echo $h->hcOidos; ?>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <strong>NARIZ Y SENOS PARANASALES: </strong>
+                        <?php echo $h->hcNarizSenosParanasales; ?>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <strong>CAVIDAD ORAL: </strong>
+                        <?php echo $h->hcCavidadOral; ?>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <strong>CUELLO: </strong>
+                        <?php echo $h->hcCuello; ?>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <strong>CARDIO RESPIRATORIO: </strong>
+                        <?php echo $h->hcCardioRespiratorio; ?>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <strong>MAMAS: </strong>
+                        <?php echo $h->hcMamas; ?>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <strong>GASTROINTESTINAL: </strong>
+                        <?php echo $h->hcGastrointestinal; ?>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <strong>GENITO URINARIO: </strong>
+                        <?php echo $h->hcGenitoUrinario; ?>
+
+                    </div>
+                    <div class="form-group col-md-6">
+                        <strong>MUSCULO ESQUELETICO: </strong>
+                        <?php echo $h->hcMusculoEsqueletico; ?>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <strong>PIEL Y ANEXOS PULSOS: </strong>
+                        <?php echo $h->hcPielAnexosPulsos; ?>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <strong>INSPECCION Y SENSIBILIDAD EN PIES: </strong>
+                        <?php echo $h->hcInspeccionSensibilidadPies; ?>
+
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <strong>NERVIOSO: </strong>
+                        <?php echo $h->hcSistemaNervioso; ?>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <strong>CAPACIDAD CONGNITIVA, ORIENTACION: </strong>
+                        <?php echo $h->hcCapacidadCongnitivaOrientacion; ?>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <strong>REFLEJO AQUILIAR: </strong>
+                        <?php echo $h->hcReflejoAquiliar; ?>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <strong>REFLEJO PATELAR: </strong>
+                        <?php echo $h->hcReflejoPatelar; ?>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <strong>LESION DE ORGANO BLANCO: </strong>
+                        <?php echo $h->hcLesionOrganoBlanco; ?>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <strong>ANT DISLIPIDEMIA FAMILIAR: </strong>
+                        <?php echo $h->hcDislipidemia; ?>
+                    </div>
+                </div>
+            </fieldset><br>
+            <fieldset>
+                <legend>EXAMENES</legend>
+                <div style="margin: 10px;">
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <strong>ELECTROCARDIOGRAMA</strong><br>
+                            <?php
+                            echo $h->hcElectrocardiograma; ?>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <strong>ECOCARDIOGRAMA</strong><br>
+                            <?php
+                            echo $h->hcEcocardiograma; ?>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <strong>ECOGRAFIA RENAL</strong><br>
+                            <?php
+                            echo $h->hcEcografiaRenal; ?>
+                        </div>
+                    </div>
+                </div>
+            </fieldset><br>
+
+            <fieldset>
+                <legend>CLASIFICACION</legend>
+
+                <div style="margin: 10px;">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <strong>CLASIFICACION HTA: </strong>
+                            <?php echo $h->hcClasificacionHta; ?>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <strong>CLASIFICACION DM: </strong>
+                            <?php echo $h->hcClasificacionDm; ?>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <strong>CLASIFIACION ERC ESTADO: </strong>
+                            <?php echo $h->hcClasificacionErcEstado; ?>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <strong>CLASIFIACION ERC CATEGORIA DE ALBUMINURIA PERSISTENTE: </strong>
+                            <?php echo $h->hcClasificacionErcCategoriaAmbulatoriaPersistente; ?>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <strong>CLASIFICACION RCV: </strong>
+                            <?php echo $h->hcClasificacionRcv; ?>
+                        </div>
+                    </div>
+                </fieldset><br>
+
+                <fieldset>
+                    <legend>EDUCACION</legend>
+
+                    <div style="margin: 10px;">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <strong>ALIMENTACION: </strong>
+                                <?php echo $h->hcAlimentacion; ?>
+
+                            </div>
+                            <div class="form-group col-md-6">
+                                <strong>FOMENTO DE ACTIVIDAD FISICA: </strong>
+                                <?php echo $h->hcFomentoActividadFisica; ?>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <strong>IMPORTANCIA DE ADHERENCIA A TRATAMIENTO: </strong>
+                                <?php echo $h->hcOmportanciaAdherenciaTratamiento; ?>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <strong>DISMINUCION DE CONSUMO DE SAL/AZUCAR: </strong>
+                                <?php echo $h->hcDisminucionConsumoSalAzucar; ?>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <strong>DISMINUCION DE CONSUMO CIGARRILLO: </strong>
+                                <?php echo $h->hcDisminucionConsumoCigarrillo; ?>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <strong>DISMINUCION DE PESO: </strong>
+                                <?php echo $h->hcDisminucionPeso; ?>
+
+                            </div>
+                            <div class="form-group col-md-6">
+                                <strong>CONSUMO DE FRUTAS Y VERDURAS: </strong>
+                                <?php echo $h->hcConsumoFrutasVerduras; ?>
+                            </div>
+
+                        </div>
+                <!--div class="form-row">
+                        <div class="form-group col-md-6">
+                            <strong>PREVENCION DE RIESGO CARDIO VASCULAR ----------campo pendiente de revision---------------------</strong>
+                            <input name="" required="" class="form-control">
+                        </div>
+                    </div-->
+                </div>
+            </fieldset><br>
+
+            <fieldset>
+                <legend>ADHERENCIA FARMACOLOGICA VALORACION TEST DE MORISKY</legend>
+                <div style="margin: 10px;">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <strong>OLVIDA ALGUNA VEZ TOMAR SUS MEDICAMENTOS: </strong>
+                            <?php echo $h->hcOlvidaTomarMedicamentos; ?>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <strong>TOMA LOS MEDICAMENTOS A LA HORA INDICADA</strong>
+                            <?php echo $h->hcTomaMedicamentosHoraIndicada; ?>
+
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <strong>CUANDO SE ENCUENTRA BIEN ¿DEJA DE TOMAR SUS MEDICAMENTOS?: </strong>
+                            <?php echo $h->hcCuandoEstaBienDejaTomarMedicamentos; ?>
+                        </div>
+
+
+                        <div class="form-group col-md-6">
+                            <strong>CUANDO SE ENCUENTRA MAL ¿DEJA DE TOMAR SUS MEDICAMENTOS?: </strong>
+                            <?php echo $h->hcSienteMalDejaTomarlos; ?>
+                        </div>
+                    </div>
+                </div>
+            </fieldset><br>
+            <div style="border: ridge #0f0fef 1px;">
+                <div class="form-row" style="margin: 10px;">
+                    <div class="form-group col-md-12">
+                        <strong>OTRAS OBSERVACIONES</strong><br>
+                        <?php echo $h->hcObservacionesGenerales; ?>
+                    </div>
+                </div>
+            </div><br>
+            <div style="border: ridge #0f0fef 1px;">
+                <div class="form-row" style="margin: 10px;">
+                    <div class="form-group col-md-12">
+                        <strong>FINALIDAD: </strong>
+                        <?php echo $h->finalidad_idFinalidad; ?>
+                    </div>
+                </div>
+            </div><br>
+            <fieldset>
+            <legend>REMISION</legend>
+            <div style="margin: 10px;">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th colspan="7">
+                                        <center>FORMATO REMISION</center>
+                                    </th>
+                                </tr>
+                                <th>CODIGO</th>
+                                <th>NOMBRE</th>
+                                <th>OBSERVACION</th>
+                            </thead>
+                            <tbody>
+
+                                <?php
+                                foreach ($remision_historia as $dh) {
+
+                                    echo "<tr>";
+                                    echo "<td>" . $dh->remCodigo . "</td>";
+                                    echo "<td>" . $dh->remNombre . "</td>";
+                                    echo "<td>" . $dh->remObservacion . "</td>";
+                                    echo "</tr>";
+                                }
+                                ?>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </fieldset><br>
+        <fieldset>
+            <legend>AYUDA DIAGNOSTICAS</legend>
+            <div style="margin: 10px;">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th colspan="7">
+                                        <center>FORMATO AYUDA DIAGNOSTICAS</center>
+                                    </th>
+                                </tr>
+                                <th>CODIGO</th>
+                                <th>CUPS</th>
+                                <th>OBSERVACION</th>
+                            </thead>
+                            <tbody>
+
+                                
+                                <?php
+                                foreach ($cups_historia as $ch) {
+
+                                    echo "<tr>";
+                                    echo "<td>" . $ch->cupCodigo . "</td>";
+                                    echo "<td>" . $ch->cupNombre . "</td>";
+                                    echo "<td>" . $ch->cupObservacion . "</td>";
+                                    echo "</tr>";
+                                }
+                                ?>
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </fieldset><br>
+            <fieldset>
+            <legend>MEDICAMENTO</legend>
+            <div style="margin: 10px;">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th colspan="7">
+                                        <center>FORMATO MEDICAMENTO</center>
+                                    </th>
+                                </tr>
+                                <th>MEDICAMENTO</th>
+                                <th>DOSIS</th>
+                                <th>CANTIDAD</th>
+                            </thead>
+                            <tbody>
+
+                                <?php
+                                foreach ($medicamento_historia as $dh) {
+
+                                    echo "<tr>";
+                                    echo "<td>" . $dh->medNombre . "</td>";
+                                    echo "<td>" . $dh->hisMedDosis . "</td>";
+                                    echo "<td>" . $dh->hisMedCantidad . "</td>";
+                                    echo "</tr>";
+                                }
+                                ?>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </fieldset><br>
+
+            <fieldset>
+                <legend>DIAGNOSTICO</legend>
+                <div style="margin: 10px;">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th colspan="7">
+                                            <center>FORMATO DIAGNOSTICA <?php echo date("Y-m-d", time()); ?></center>
+                                        </th>
+                                    </tr>
+                                    <th>#</th>
+									<th>CODIGO</th>
+									<th>DIAGNOSTICO</th>
+									<th>CLASIFICACION</th>
+									<th>TIPO</th>
+                                </thead>
+                                <tbody>
+
+                                    <?php
+                                    foreach ($diagnostico_historia as $dh) {
+
+                                        echo "<tr>";
+										echo "<td>" .$num++. "</td>";
+										echo "<td>" . $dh->diaCodigo . "</td>";
+										echo "<td>" . $dh->diaNombre . "</td>";
+										echo "<td>" . $dh->his_dia_tipo . "</td>";
+										echo "<td>" . $dh->hcTipoDiagnostico . "</td>";
+                                        echo "</tr>";
+                                    }
+                                    ?>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <strong>CAUSA EXTERNA: </strong>
+                            <?php echo $h->hcCausaExterna; ?>
+                        </div>
+                    </div>
+                </div>
+            </fieldset><br>
+            <div style="border: ridge #0f0fef 1px;">
+                <div class="form-row" style="margin: 10px; text-align:center;">
+                    <div class="form-group col-md-6">
+                        <?php
+
+                        echo '<img alt="Image placeholder" width="302px" height="70px" src="data:image/jpeg;base64,' . base64_encode($h->usuFirma) . '"/>'; ?><br>
+
+                        <strong>FIRMA DIGITAL</strong><br>
+                        <strong>PROFESIONAL: </strong>
+                        <em><?= $h->usuNombre . " " . $h->usuApellido; ?><br>RM: <?= $h->usuRegistroProfesional; ?></em>
+                    </div>
+                    <div class="form-group col-md-6"><br><br><br><br><br>
+                        <strong>FIRMA PACIENTE: </strong>
+                        <em><?= $h->nom_abreviacion . "-" . $h->pacDocumento . " " . $h->pacNombre . " " . $h->pacApellido ?></em>
+                    </div>
+                </div>
+            </div>
+
+        <?php } ?>
+    </div>
+
+    <script type="text/javascript">
+
+        window.print();
+        window.onmousemove = function() {
+          window.close();
+      }
+
+  </script>

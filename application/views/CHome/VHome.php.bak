@@ -1,0 +1,23 @@
+<MARQUEE> 
+    <h4  id=mover style="color:#FFFFFF";>Bienvenido: <?= $this->session->userdata('nom_user'); ?></h4>
+</MARQUEE>
+
+<div align='center'>
+    <img id=contenedor width= 60% height="600" src="http://localhost/ips/assets/img/mejora1.gif"> 
+</div>
+
+<style>
+    #contenedor {
+        
+border-radius: 80px;
+}
+</style>
+
+<style>
+#mover:hover { 
+    -webkit-transform:scale(1.3);transform:scale(1.1);
+   overflow:hidden;
+ 
+} </style>
+
+

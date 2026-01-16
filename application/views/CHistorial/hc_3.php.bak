@@ -1,0 +1,321 @@
+<style type="text/css">
+    fieldset {
+        border: 1px ridge #0f0fef;
+        /* Borde */
+    }
+
+    legend {
+        text-align: left;
+        /* Puedes cambiarlo por center o right */
+        width: inherit;
+        /* Or auto */
+        padding: 0 10px;
+        /* To give a bit of padding on the left and right */
+        border-bottom: none;
+        font-size: 16px;
+    }
+</style>
+
+<div class="mx-auto" style="width: 1300px;">
+
+    <!--h5 style="color: blue;">PSICOLOGIA GESTION DEL RIESGO CARDIO RENAL</h5-->
+    <?php foreach ($dato_historia as $h) { ?>
+        <div style="border: ridge #0f0fef 1px; text-align:center">
+
+                <div class="form-row" style="margin: 10px;">
+                    <div class="form-group col-md-4">
+
+                        <tr>
+                            <td width="156" rowspan="7" align="center" valign="middle"><img src="<?= base_url("assets/img/logo.png"); ?>" width="100px" /></td>
+                        </tr>
+
+                    </div>
+                    <div class="form-group col-md-4" style=" margin: auto;">
+
+                        <tr height="">
+                            <td height="">
+                                <div align="center">
+                                    <h3>FUNDACIÓN NACER PARA<br>VIVIR IPS</h3>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr height="">
+                            <td height="">
+                                <div align="center"><small><?= $h->proNombre; ?> PROGRAMA DE GESTION DEL RIESGO CARDIO RENAL</small>
+                                   <br>
+                            <small><?= $dato_historia[0]->citFecha ?></small></div>
+                            </td>
+                        </tr>
+                    </div>
+
+
+                    <div class="form-group col-md-4">
+
+                        <tr>
+                            <td width="156" rowspan="7" align="center" valign="middle"><img src="<?= base_url("assets/img/logo.png"); ?>" width="100px" /></td>
+                        </tr>
+
+                    </div>
+
+
+                </div>
+            </div>
+            <br><br>
+
+        <fieldset>
+            <legend>DATOS PACIENTE</legend>
+            <div class="form-row" style="text-align:center">
+                <div class="form-group col-md-2">
+                    <strong>NOMBRE</strong><br>
+                    <?php
+                    echo $h->nom_abreviacion . " " . $h->pacDocumento . "<br>";
+                     echo $h->pacNombre . " " . $h->pacNombre2 . " " . $h->pacApellido. " " . $h->pacApellido2; ?>
+                </div>
+                <div class="form-group col-md-2">
+                    <strong>FECHA NACIMIENTO Y EDAD</strong><br>
+                    <?php echo $h->pacFecNacimiento . "<br>";
+                    list($anio, $mes, $dia) = explode("-", $h->pacFecNacimiento);
+                    $anio_dif = date("Y") - $anio;
+                    $mes_dif = date("m") - $mes;
+                    $dia_dif = date("d") - $dia;
+
+                    if ($dia_dif < 0 || $mes_dif < 0) {
+                        $anio_dif--;
+                        //return $anio_dif;
+                    }
+
+                    echo $anio_dif . "Años";
+                    ?>
+                </div>
+                <div class="form-group col-md-2">
+                    <strong>SEXO</strong><br>
+                    <?php if ($h->pacSexo == "M") {
+                        echo "MASCULINO";
+                    } else {
+                        echo "FEMENINO";
+                    } ?>
+                </div>
+                <div class="form-group col-md-2">
+                    <strong>ESATDO CIVIL</strong><br>
+                    <?php echo $h->pacEstCivil; ?>
+                </div>
+                <div class="form-group col-md-2">
+                    <strong>TELEFONO</strong><br>
+                    <?php echo $h->pacTelefono; ?>
+                </div>
+                <div class="form-group col-md-2">
+                    <strong>DIRECCION</strong><br>
+                    <?php
+                    echo $h->depNombre . " - " . $h->munNombre . "<br>" . $h->pacDireccion; ?>
+                </div>
+            </div>
+            <div class="form-row" style="text-align:center">
+                <div class="form-group col-md-3">
+                    <strong>ASEGURADORA</strong><br>
+                    <?php
+                    echo $h->empNombre; ?>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <strong>REGIMEN</strong><br>
+                    <?php echo $h->regNombre; ?>
+                </div>
+                <div class="form-group col-md-3">
+                    <strong>OCUPACION</strong><br>
+                    <?php echo $h->ocuNombre; ?>
+                </div>
+                <div class="form-group col-md-3">
+                    <strong>BRIGADA</strong><br>
+                    <?php echo $h->zonNombre; ?>
+                </div>
+            </div>
+
+        </fieldset><br>
+        <fieldset>
+            <legend>ACUDIENTE</legend>
+            <div class="form-row" style="margin: 10px; text-align:center">
+                <div class="form-group col-md-4">
+                    <strong>NOMBRE ACOMPAÑANTE</strong><br>
+                    <?php
+                    echo $h->hcAcompanante; ?>
+                </div>
+                <div class="form-group col-md-4">
+                    <strong>PARENTESCO</strong><br>
+                    <?php
+                    echo $h->hcAcuParentesco; ?>
+                </div>
+                <div class="form-group col-md-4">
+                    <strong>TELEFONO</strong><br>
+                    <?php
+                    echo $h->hcAcuTelefono; ?>
+                </div>
+            </div>
+
+        </fieldset><br>
+<?php foreach ($antecedentes_personales as $hap) { ?>
+
+            <fieldset>
+                <legend>HISTORIA CLINICA</legend>
+                <div style="margin: 10px;">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <strong>1. MOTIVO CONSULTA</strong><br>
+                            <?php
+                            echo $hap->hcMotivoConsulta; ?>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <strong>2. ESTRUCTURA FAMILIAR (FAMILIARES O PERSONAS CON LAS QUE CONVIVE EL PACIENTE)</strong><br>
+                            <?php
+                            echo $hap->hcEstructuraFamiliar; ?>
+                        </div>
+                    </div>
+                     <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <strong>3. RED DE APOYO FAMILIAR QUE CONSIDERA EL PACIENTE (FAMILIAR O FAMILIARES A LOS QUE EL PACIENTE CONSIDERE COMO SU RED DE APOYO)</strong><br>
+                            <?php
+                            echo $hap->hcPsicologiaRedApoyo; ?>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <strong>4. COMPORTAMIENTO EN CONSULTA</strong><br>
+                            <?php
+                            echo $hap->hcPsicologiaComportamientoConsulta; ?>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <strong>5. TRATAMIENTO ACTUAL Y ADHERENCIA (DESCRIPCION DEL PACIENTE SOBRE EL TRATAMIENTO Y LA ADHERENCIA AL MISMO)</strong><br>
+                             <?php
+                            echo $hap->hcPsicologiaTratamientoActualAdherencia; ?>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <strong>6. DESCRIPCION DEL PROBLEMA (DESCRIPCION DEL PACIENTE DE LA SITUACION QUE LO AFECTA)</strong><br>
+                            <?php
+                            echo $hap->hcPsicologiaDescripcionProblema; ?>
+                        </div>
+                    </div>
+                     <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <strong>7. ANALISIS Y CONCLUSIONES</strong><br>
+                            <?php
+                            echo $hap->hcAnalisisConclusiones; ?>
+                        </div>
+                         <div class="form-group col-md-6">
+                            <strong>8. PLAN DE INTERVENCION Y RECOMENDACIONES</strong><br>
+                            <?php
+                            echo $hap->hcPsicologiaPlanIntervencionRecomendacion; ?>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <?php } ?> <br>
+
+        <div style="border: ridge #0f0fef 1px;">
+            <div class="form-row" style="margin: 10px;">
+                <div class="form-group col-md-12">
+                    <strong>FINALIDAD: </strong>
+                    <?php
+                    echo $h->finalidad_idFinalidad; ?>
+                </div>
+            </div>
+        </div><br>
+        <!--fieldset>
+            <legend>REMISION</legend>
+            <div style="margin: 10px;">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th colspan="7">
+                                        <center>FORMATO REMISION</center>
+                                    </th>
+                                </tr>
+                                <th>CODIGO</th>
+                                <th>NOMBRE</th>
+                                <th>OBSERVACION</th>
+                            </thead>
+                            <tbody>
+
+                                <?php
+                                foreach ($remision_historia as $dh) {
+
+                                    echo "<tr>";
+                                    echo "<td>" . $dh->remCodigo . "</td>";
+                                    echo "<td>" . $dh->remNombre . "</td>";
+                                    echo "<td>" . $dh->remObservacion . "</td>";
+                                    echo "</tr>";
+                                }
+                                ?>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </fieldset><br-->
+        <fieldset>
+            <legend>DIAGNOSTICO</legend>
+            <div style="margin: 10px;">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th colspan="7">
+                                        <center>FORMATO DIAGNOSTICA <?php echo date("Y-m-d", time()); ?></center>
+                                    </th>
+                                </tr>
+                                <th>DIAGNOSTICO</th>
+                                <th>TIPO</th>
+                            </thead>
+                            <tbody>
+
+                                <?php
+                                foreach ($diagnostico_historia as $dh) {
+
+                                    echo "<tr>";
+                                    echo "<td>" . $dh->diaNombre . "</td>";
+                                    echo "<td>" . $dh->his_dia_tipo . "</td>";
+
+                                    echo "</tr>";
+                                }
+                                ?>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <strong>CAUSA EXTERNA: </strong>
+                        <?php echo $h->hcCausaExterna; ?>
+                    </div>
+                </div>
+            </div>
+        </fieldset><br>
+        <div style="border: ridge #0f0fef 1px;">
+            <div class="form-row" style="margin: 10px; text-align:center;">
+                <div class="form-group col-md-6">
+                    <strong>PROFESIONAL QUE ATIENDE</strong><br>
+                    <em><?= $h->usuNombre . " " . $h->usuApellido; ?><br>RM:<br><?= $h->usuRegistroProfesional; ?><br>Firma Digital:<br> <?php echo '<img alt="Image placeholder" width="302px" height="70px" src="data:image/jpeg;base64,' . base64_encode($h->usuFirma) . '"/>'; ?> </em>
+                </div>
+                <div class="form-group col-md-6">
+                    <strong>FIRMA PACIENTE</strong><br>
+                    <em><?= $h->nom_abreviacion . "-" . $h->pacDocumento . " " . $h->pacNombre . " " . $h->pacApellido ?></em>
+                </div>
+            </div>
+        </div>
+
+    <?php } ?>
+
+</div>
+
+
+<script type="text/javascript">
+
+window.print();
+window.onmousemove = function() {
+  window.close();
+}
+
+</script>

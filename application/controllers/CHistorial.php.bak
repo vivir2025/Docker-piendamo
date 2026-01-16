@@ -1,0 +1,618 @@
+<style>
+#boton:hover { 
+   -webkit-transform:scale(1.3);transform:scale(1.3);
+   overflow:hidden;
+   border-radius: 90px;
+   background:#F04848;
+
+} </style>
+
+
+<style>
+#segundo:hover { 
+   -webkit-transform:scale(1.3);transform:scale(1.3);
+   overflow:hidden;
+   border-radius: 30px;
+   background:#0004FF;
+
+} </style>
+
+<style>
+#tercero:hover { 
+   -webkit-transform:scale(1.3);transform:scale(1.3);
+   overflow:hidden;
+   border-radius: 30px;
+   background:#FFD800;
+
+} </style>
+<style>
+#cuarto:hover { 
+   -webkit-transform:scale(1.3);transform:scale(1.3);
+   overflow:hidden;
+   border-radius: 30px;
+   background:#00B305;
+
+} </style>
+<style>
+#quinto:hover { 
+   -webkit-transform:scale(1.3);transform:scale(1.3);
+   overflow:hidden;
+   border-radius: 30px;
+   background:#029FFF;
+
+} </style>
+
+
+<?php
+defined('BASEPATH') or exit('No direct script access allowed');
+
+class CHistorial extends CI_Controller
+{
+
+   public function __construct()
+   {
+      parent::__construct();
+      $this->load->helper("url");
+      $this->load->model("MHistorial");
+      $this->load->model("MHistoria");
+   }
+
+   public function index()
+   {
+
+      $data['title'] = 'IPS | HISTORIA CLINICA';
+
+      $this->load->view("CPlantilla/VHead", $data);
+
+      $this->load->view("CPlantilla/VBarraMenu");
+
+      $this->load->view("CHistorial/VListar.php");
+
+      $this->load->view("CPlantilla/VFooter");
+   }
+
+   public function buscar_paciente()
+   {
+
+      $pacDocumento = $this->input->post('documento');
+
+      $data = $this->MHistorial->getPacientexdoc($pacDocumento);
+      //print_r($data);
+
+      echo "<div class='container'>";
+      echo "<table class='table table-bordered'>";
+
+
+      if (sizeof($data) > 0) {
+
+         //echo "<div class='alert alert-info alert-dismissible fade show' role='alert'";
+
+         echo "<tr>";
+         echo "<td>Paciente</td>";
+         echo "<td>Tipo</td>";
+         echo "<td>Area</td>";
+         echo "<td>Profesional</td>";
+         echo "<td>Fecha</td>";
+         echo "<td>Opcion</td>";
+         echo "</tr>";
+         echo "<tbody>";
+         foreach ($data as $d) {
+
+            $url1 = base_url('index.php/CHistorial/imprimir_medicamento/' . $d->id_hc);
+            $url2 = base_url('index.php/CHistorial/imprimir_remision/' . $d->id_hc);
+            $url3 = base_url('index.php/CHistorial/imprimir_ayudas_diagnostica/' . $d->id_hc);
+
+           
+            if ($d->proceso_idProceso == 1 && $d->id_categoria_cups == 1) {
+               $proceso = 'ESPECIAL PRIMERA VEZ';
+            } elseif ($d->proceso_idProceso == 1 && $d->id_categoria_cups == 2) {
+               $proceso = 'ESPECIAL CONTROL';
+            } elseif ($d->proceso_idProceso == 2 && $d->id_categoria_cups == 1) {
+               $proceso = 'TRABAJO SOCIAL PRIMERA VEZ';
+            } elseif ($d->proceso_idProceso == 2 && $d->id_categoria_cups == 2) {
+               $proceso = 'TRABAJO SOCIAL CONTROL';
+            } elseif ($d->proceso_idProceso == 4 && $d->id_categoria_cups == 1) {
+               $proceso = 'NUTRICIONISTA PRIMERA VEZ';
+            } elseif ($d->proceso_idProceso == 4 && $d->id_categoria_cups == 2) {
+               $proceso = 'NUTRICIONISTA CONTROL';
+            } elseif ($d->proceso_idProceso == 5 && $d->id_categoria_cups == 1) { 
+               $proceso = 'PSICOLOGIA PRIMERA VEZ';
+            } elseif ($d->proceso_idProceso == 5 && $d->id_categoria_cups == 2) {
+               $proceso = 'PSICOLOGIA CONTROL';
+            } elseif ($d->proceso_idProceso == 13 && $d->id_categoria_cups == 1) { 
+               $proceso = 'FISIOTERAPIA  PRIMERA VEZ';
+            } elseif ($d->proceso_idProceso == 13 && $d->id_categoria_cups == 2) {
+               $proceso = 'FISIOTERAPIA CONTROL';
+        
+            } else {
+               $proceso = $d->proNombre;
+            }
+
+            echo "<tr>";
+            echo "<td>CC: " . $d->pacDocumento . "<br>Nombre: " . $d->pacNombre . " " . $d->pacNombre2 . " " . $d->pacApellido . " " . $d->pacApellido2 . "</td>";
+            echo "<td>ESPECIALIDAD</td>";
+            echo "<td>" . $proceso . "</td>";
+            echo "<td>" . $d->usuNombre . " " . $d->usuApellido . "</td>";
+            echo "<td>" . $d->citFecha . "</td>";
+            echo  "<td align=center>";
+           
+            echo "<img  width= 10%  id=boton src='http://45.167.125.238/ips/assets/img/visor.gif ' title='Historia Clinica Completa' onclick='verHistoriaCompleta($d->id_hc, $d->id_cat_cups, $d->proceso_idProceso)'>";
+
+            echo "<img width= 10% id=segundo src='http://45.167.125.238/ips/assets/img/imprimir1.png'  title='Historia Clinica' onclick='verValoracion($d->id_hc, $d->id_cat_cups, $d->proceso_idProceso)'> ";
+
+
+            if ($d->proceso_idProceso == 1 || $d->proceso_idProceso == 2 || $d->proceso_idProceso == 3 || $d->proceso_idProceso == 4 || $d->proceso_idProceso == 5 || $d->proceso_idProceso == 6 || $d->proceso_idProceso == 7) {
+               echo "<img  width= 11% id=tercero  src='http://45.167.125.238/ips/assets/img/medicamentos.png'  title='Medicamento' onClick='finestraSecundaria(\"{$url1}\")'>
+                ";
+            }
+            if ($d->proceso_idProceso == 1 || $d->proceso_idProceso == 3 || $d->proceso_idProceso == 4 || $d->proceso_idProceso == 5 || $d->proceso_idProceso == 6 || $d->proceso_idProceso == 7) {
+               echo "<img   width= 10% id=cuarto  src='http://45.167.125.238/ips/assets/img/remision.png'  title='Remision' onClick='finestraSecundaria(\"{$url2}\")'> ";
+            }
+            if ($d->proceso_idProceso == 1 || $d->proceso_idProceso == 3 || $d->proceso_idProceso == 6 || $d->proceso_idProceso == 7) {
+               echo "<img  width= 10% id=quinto src='http://45.167.125.238/ips/assets/img/ayuda.png'  title='Ayuda Dianostica' onClick='finestraSecundaria(\"{$url3}\")'> ";
+            }
+            echo "<img  width= 11% id=quinto src='http://45.167.125.238/ips/assets/img/paraclinico1.png'  title='Paraclinicos' onclick='vervistaparaclinico($d->pacDocumento)'>";
+            echo "<img  width= 11% id=quinto src='http://45.167.125.238/ips/assets/img/visitas.png'  title='Visitas Domiciliarias' onclick='verVisitas($d->pacDocumento)'>";
+            echo "</td>";
+            echo "</tr>";
+         }
+         echo "</tbody>";
+      } else {
+
+         echo "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+         No hay historial para mostrar.
+         <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+         <span aria-hidden='true'>&times;</span>
+         </button>
+         </div>";
+      }
+
+      echo "</table>";
+      echo "</div>";
+   }
+    public function buscar_paciente1()
+   {
+      $usuario='root';
+      $contraseña='';
+      $host='localhost';
+      $base='ips';
+      try{
+         $conexion = new PDO('mysql: host='.$host.';dbname='.$base, $usuario, $contraseña);
+      }
+      catch (PDOException $e)
+      {
+         print "!Error¡:" .$e->getMessage()."<br/>";
+         die();
+      }
+
+      $pacDocumento = $_POST['documento'];
+
+      $data = $this->MHistorial->getPacientexdoc($pacDocumento);
+      //print_r($data);
+      echo "<table class='table table-bordered bg-white'>";
+
+
+      if (sizeof($data) > 0) {
+
+         //echo "<div class='alert alert-info alert-dismissible fade show' role='alert'";
+         foreach ($data as $d) 
+			echo "<tr>";
+		  
+         echo "<td class='bg-primary text-white'> Nombre: " . $d->pacNombre . " " . $d->pacNombre2 . " " . $d->pacApellido . " " . $d->pacApellido2 . "</td>";
+	
+         echo "<td class='bg-primary text-white'>CC: " . $d->pacDocumento . "</td>";
+         echo "</tr>";
+         echo "<tbody>";
+         
+         
+			
+            echo "<table class='table table-bordered bg-white' >";
+            echo "<tbody>"; 
+            echo "<tr class='bg-success text-white'> ";
+            
+            echo "<td >Areá</td>";
+            
+            echo "<td>Total de Citas</td>";
+            echo "</tr>";
+            echo "</tbody>"; 
+            
+           
+     
+            
+            $query="SELECT `proceso`.`proNombre`,`paciente`.`pacDocumento`,
+            COUNT(*) as total_procesos
+            FROM `proceso`
+            LEFT JOIN `agenda` ON `agenda`.`proceso_idProceso` = `proceso`.`idProceso`
+            LEFT JOIN `cita` ON `cita`.`agenda_idAgenda` = `agenda`.`idAgenda`
+            LEFT JOIN `paciente` ON `cita`.`paciente_idPaciente` = `paciente`.`idPaciente` 
+            WHERE pacDocumento ='$pacDocumento'
+            GROUP BY paciente.pacDocumento, proceso.proNombre";
+            $consulta=$conexion->query($query);
+            while ($data=$consulta->fetch(PDO::FETCH_ASSOC))
+         {
+            echo'
+            <tr>
+           
+            <td>'.$data['proNombre'].'</td>
+            <td>'.$data['total_procesos'].'</td>
+            </tr>';
+         }
+
+            
+
+            
+         
+         echo "</tbody>";
+       } else {
+
+         echo "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
+         No hay citas por contar.
+         <button type='button' class='close' data-dismiss='alert' aria-label='Close'>
+         <span aria-hidden='true'>&times;</span>
+         </button>
+         </div>";
+      }
+
+      echo "</table>";
+      echo "</div>";
+     
+      
+   }
+   
+
+   public function imprimir_ayudas_diagnostica($id_hc)
+   {
+
+      $data['title'] = 'IPS | IMPRIMIO: ' . $this->session->userdata('nom_user');
+
+      $this->load->view("CPlantilla/VHead", $data);
+
+
+      $datos['cups_historia'] = $this->MHistoria->detalle_historia_cups($id_hc);
+      $datos['dato_historia'] = $this->MHistoria->datos_historia($id_hc);
+      $datos['diagnostico_historia'] = $this->MHistoria->detalle_historia_diagnostico($id_hc);
+
+
+      $this->load->view("CHistorial/VAyudaDiagnostica.php", $datos);
+
+      $this->load->view("CPlantilla/VFooter", $data);
+   }
+
+   public function imprimir_remision($id_hc)
+   {
+
+      $data['title'] = 'IPS | IMPRIMIO: ' . $this->session->userdata('nom_user');
+
+      $this->load->view("CPlantilla/VHead", $data);
+
+
+      $datos['remision_historia'] = $this->MHistoria->detalle_historia_remision($id_hc);
+      $datos['dato_historia'] = $this->MHistoria->datos_historia($id_hc);
+      $datos['diagnostico_historia'] = $this->MHistoria->detalle_historia_diagnostico($id_hc);
+
+      $this->load->view("CHistorial/VRemision.php", $datos);
+
+      $this->load->view("CPlantilla/VFooter", $data);
+   }
+
+   public function imprimir_medicamento($id_hc)
+   {
+
+      $data['title'] = 'IPS | IMPRIMIO: ' . $this->session->userdata('nom_user');
+
+      $this->load->view("CPlantilla/VHead", $data);
+
+
+      $datos['medicamento_historia'] = $this->MHistoria->detalle_historia_medicamento($id_hc);
+      $datos['dato_historia'] = $this->MHistoria->datos_historia($id_hc);
+      $datos['diagnostico_historia'] = $this->MHistoria->detalle_historia_diagnostico($id_hc);
+
+      $this->load->view("CHistorial/VMedicamento.php", $datos);
+
+      $this->load->view("CPlantilla/VFooter", $data);
+   }
+
+   public function imprimir_diagnostico($id_hc)
+   {
+
+      $data['title'] = 'IPS | IMPRIMIO: ' . $this->session->userdata('nom_user');
+
+      $this->load->view("CPlantilla/VHead", $data);
+
+
+      $datos['diagnostico_historia'] = $this->MHistoria->detalle_historia_diagnostico($id_hc);
+      $datos['dato_historia'] = $this->MHistoria->datos_historia($id_hc);
+      $datos['diagnostico_historia'] = $this->MHistoria->detalle_historia_diagnostico($id_hc);
+
+      $this->load->view("CHistorial/VDiagnostico.php", $datos);
+
+      $this->load->view("CPlantilla/VFooter", $data);
+   }
+
+   public function hc_1($id_hc)
+   {
+
+      $data['title'] = 'IPS | HC PRIMERA VEZ';
+
+      $this->load->view("CPlantilla/VHead", $data);
+
+      $this->load->view("CPlantilla/VBarraMenu");
+
+      $datos['medicamento_historia'] = $this->MHistoria->detalle_historia_medicamento($id_hc);
+      $datos['remision_historia'] = $this->MHistoria->detalle_historia_remision($id_hc);
+      $datos['cups_historia'] = $this->MHistoria->detalle_historia_cups($id_hc);
+      $datos['diagnostico_historia'] = $this->MHistoria->detalle_historia_diagnostico($id_hc);
+
+      $datos['dato_historia'] = $this->MHistoria->datos_historia($id_hc);
+
+      $this->load->view("CHistorial/hc_1.php", $datos);
+
+      $this->load->view("CPlantilla/VFooter");
+   }
+
+   public function hc_2($id_hc)
+   {
+
+      $data['title'] = 'IPS | HC CONTROL';
+
+      $this->load->view("CPlantilla/VHead", $data);
+
+      $this->load->view("CPlantilla/VBarraMenu");
+
+      $datos['medicamento_historia'] = $this->MHistoria->detalle_historia_medicamento($id_hc);
+      $datos['remision_historia'] = $this->MHistoria->detalle_historia_remision($id_hc);
+      $datos['cups_historia'] = $this->MHistoria->detalle_historia_cups($id_hc);
+      $datos['diagnostico_historia'] = $this->MHistoria->detalle_historia_diagnostico($id_hc);
+
+      $datos['dato_historia'] = $this->MHistoria->datos_historia($id_hc);
+
+      $this->load->view("CHistorial/hc_2.php", $datos);
+
+      $this->load->view("CPlantilla/VFooter");
+   }
+
+   public function hc_3($id_hc)
+   {
+
+      $data['title'] = 'IPS | HC PSICOLOGIA';
+
+      $this->load->view("CPlantilla/VHead", $data);
+
+      $this->load->view("CPlantilla/VBarraMenu");
+
+      $datos['medicamento_historia'] = $this->MHistoria->detalle_historia_medicamento($id_hc);
+      $datos['remision_historia'] = $this->MHistoria->detalle_historia_remision($id_hc);
+      $datos['cups_historia'] = $this->MHistoria->detalle_historia_cups($id_hc);
+      $datos['diagnostico_historia'] = $this->MHistoria->detalle_historia_diagnostico($id_hc);
+      $datos['antecedentes_personales'] = $this->MHistoria->detalle_antecedentes_personales($id_hc);
+      $datos['dato_historia'] = $this->MHistoria->datos_historia($id_hc);
+
+      $this->load->view("CHistorial/hc_3.php", $datos);
+
+      $this->load->view("CPlantilla/VFooter");
+   }
+
+   public function hc_10($id_hc)
+   {
+
+      $data['title'] = 'IPS | HC PSICOLOGIA';
+
+      $this->load->view("CPlantilla/VHead", $data);
+
+      $this->load->view("CPlantilla/VBarraMenu");
+
+      $datos['diagnostico_historia'] = $this->MHistoria->detalle_historia_diagnostico($id_hc);
+      $datos['antecedentes_personales'] = $this->MHistoria->detalle_antecedentes_personales($id_hc);
+      $datos['dato_historia'] = $this->MHistoria->datos_historia($id_hc);
+
+      $this->load->view("CHistorial/hc_10.php", $datos);
+
+      $this->load->view("CPlantilla/VFooter");
+   }
+
+   public function hc_4($id_hc)
+   {
+
+      $data['title'] = 'IPS | HC NEFROLOGIA';
+
+      $this->load->view("CPlantilla/VHead", $data);
+
+      $this->load->view("CPlantilla/VBarraMenu");
+
+      $datos['medicamento_historia'] = $this->MHistoria->detalle_historia_medicamento($id_hc);
+      $datos['remision_historia'] = $this->MHistoria->detalle_historia_remision($id_hc);
+      $datos['cups_historia'] = $this->MHistoria->detalle_historia_cups($id_hc);
+      $datos['diagnostico_historia'] = $this->MHistoria->detalle_historia_diagnostico($id_hc);
+      $datos['antecedentes_personales'] = $this->MHistoria->detalle_antecedentes_personales($id_hc);
+
+      $datos['dato_historia'] = $this->MHistoria->datos_historia($id_hc);
+
+      $this->load->view("CHistorial/hc_4.php", $datos);
+
+      $this->load->view("CPlantilla/VFooter");
+   }
+
+   public function hc_5($id_hc)
+   {
+
+      $data['title'] = 'IPS | HC INTERNISTA';
+
+      $this->load->view("CPlantilla/VHead", $data);
+
+      $this->load->view("CPlantilla/VBarraMenu");
+
+      $datos['medicamento_historia'] = $this->MHistoria->detalle_historia_medicamento($id_hc);
+      $datos['remision_historia'] = $this->MHistoria->detalle_historia_remision($id_hc);
+      $datos['cups_historia'] = $this->MHistoria->detalle_historia_cups($id_hc);
+      $datos['diagnostico_historia'] = $this->MHistoria->detalle_historia_diagnostico($id_hc);
+      $datos['antecedentes_personales'] = $this->MHistoria->detalle_antecedentes_personales($id_hc);
+
+      $datos['dato_historia'] = $this->MHistoria->datos_historia($id_hc);
+
+      $this->load->view("CHistorial/hc_5.php", $datos);
+
+      $this->load->view("CPlantilla/VFooter");
+   }
+
+   public function hc_6($id_hc)
+   {
+
+      $data['title'] = 'IPS | HC TRABAJO SOCIAL';
+
+      $this->load->view("CPlantilla/VHead", $data);
+
+      //$this->load->view("CPlantilla/VBarraMenu");
+
+      $datos['medicamento_historia'] = $this->MHistoria->detalle_historia_medicamento($id_hc);
+      $datos['remision_historia'] = $this->MHistoria->detalle_historia_remision($id_hc);
+      $datos['cups_historia'] = $this->MHistoria->detalle_historia_cups($id_hc);
+      $datos['diagnostico_historia'] = $this->MHistoria->detalle_historia_diagnostico($id_hc);
+      $datos['antecedentes_personales'] = $this->MHistoria->detalle_antecedentes_personales($id_hc);
+
+      $datos['dato_historia'] = $this->MHistoria->datos_historia($id_hc);
+
+      $this->load->view("CHistorial/hc_6.php", $datos);
+
+      $this->load->view("CPlantilla/VFooter");
+   }
+
+   public function hc_7($id_hc)
+   {
+
+      $data['title'] = 'IPS | HC REFORMULACION';
+
+      $this->load->view("CPlantilla/VHead", $data);
+
+      //$this->load->view("CPlantilla/VBarraMenu");
+
+      $datos['medicamento_historia'] = $this->MHistoria->detalle_historia_medicamento($id_hc);
+      $datos['remision_historia'] = $this->MHistoria->detalle_historia_remision($id_hc);
+      $datos['cups_historia'] = $this->MHistoria->detalle_historia_cups($id_hc);
+      $datos['diagnostico_historia'] = $this->MHistoria->detalle_historia_diagnostico($id_hc);
+
+      $datos['dato_historia'] = $this->MHistoria->datos_historia($id_hc);
+
+      $this->load->view("CHistorial/hc_7.php", $datos);
+
+      $this->load->view("CPlantilla/VFooter");
+   }
+
+   public function hc_8($id_hc)
+   {
+
+      $data['title'] = 'IPS | HC TRABAJO SOCIAL CONTROL';
+
+      $this->load->view("CPlantilla/VHead", $data);
+
+      //$this->load->view("CPlantilla/VBarraMenu");
+
+      $datos['medicamento_historia'] = $this->MHistoria->detalle_historia_medicamento($id_hc);
+      $datos['remision_historia'] = $this->MHistoria->detalle_historia_remision($id_hc);
+      $datos['cups_historia'] = $this->MHistoria->detalle_historia_cups($id_hc);
+      $datos['diagnostico_historia'] = $this->MHistoria->detalle_historia_diagnostico($id_hc);
+      $datos['antecedentes_personales'] = $this->MHistoria->detalle_antecedentes_personales($id_hc);
+
+      $datos['dato_historia'] = $this->MHistoria->datos_historia($id_hc);
+
+      $this->load->view("CHistorial/hc_8.php", $datos);
+
+      $this->load->view("CPlantilla/VFooter");
+   }
+
+   public function hc_9($id_hc)
+   {
+
+      $data['title'] = 'IPS | HC NUTRICIONISTA';
+
+      $this->load->view("CPlantilla/VHead", $data);
+
+      //$this->load->view("CPlantilla/VBarraMenu");
+
+      $datos['medicamento_historia'] = $this->MHistoria->detalle_historia_medicamento($id_hc);
+      $datos['remision_historia'] = $this->MHistoria->detalle_historia_remision($id_hc);
+      $datos['cups_historia'] = $this->MHistoria->detalle_historia_cups($id_hc);
+      $datos['diagnostico_historia'] = $this->MHistoria->detalle_historia_diagnostico($id_hc);
+
+      $datos['antecedentes_personales'] = $this->MHistoria->detalle_antecedentes_personales($id_hc);
+
+      $datos['dato_historia'] = $this->MHistoria->datos_historia($id_hc);
+
+      $this->load->view("CHistorial/hc_9.php", $datos);
+
+      $this->load->view("CPlantilla/VFooter");
+   }
+
+
+   public function hc_11($id_hc)
+   {
+
+      $data['title'] = 'IPS | HC NUTRICIONISTA CONTROL';
+
+      $this->load->view("CPlantilla/VHead", $data);
+
+      //$this->load->view("CPlantilla/VBarraMenu");
+
+      $datos['medicamento_historia'] = $this->MHistoria->detalle_historia_medicamento($id_hc);
+      $datos['remision_historia'] = $this->MHistoria->detalle_historia_remision($id_hc);
+      $datos['cups_historia'] = $this->MHistoria->detalle_historia_cups($id_hc);
+      $datos['diagnostico_historia'] = $this->MHistoria->detalle_historia_diagnostico($id_hc);
+
+      $datos['antecedentes_personales'] = $this->MHistoria->detalle_antecedentes_personales($id_hc);
+
+      $datos['dato_historia'] = $this->MHistoria->datos_historia($id_hc);
+
+      $this->load->view("CHistorial/hc_11.php", $datos);
+
+      $this->load->view("CPlantilla/VFooter");
+   }
+
+
+public function hc_12($id_hc)
+   {
+
+      $data['title'] = 'IPS | HC ';
+
+      $this->load->view("CPlantilla/VHead", $data);
+
+      //$this->load->view("CPlantilla/VBarraMenu");
+
+      $datos['medicamento_historia'] = $this->MHistoria->detalle_historia_medicamento($id_hc);
+      $datos['remision_historia'] = $this->MHistoria->detalle_historia_remision($id_hc);
+      $datos['cups_historia'] = $this->MHistoria->detalle_historia_cups($id_hc);
+      $datos['diagnostico_historia'] = $this->MHistoria->detalle_historia_diagnostico($id_hc);
+
+      $datos['antecedentes_personales'] = $this->MHistoria->detalle_antecedentes_personales($id_hc);
+
+      $datos['dato_historia'] = $this->MHistoria->datos_historia($id_hc);
+
+      $this->load->view("CHistorial/hc_12.php", $datos);
+
+      $this->load->view("CPlantilla/VFooter");
+   }
+
+
+   public function hc_13($id_hc)
+   {
+
+      $data['title'] = 'IPS | HC FISIOTERAPIA CONTROL';
+
+      $this->load->view("CPlantilla/VHead", $data);
+
+      //$this->load->view("CPlantilla/VBarraMenu");
+
+      $datos['medicamento_historia'] = $this->MHistoria->detalle_historia_medicamento($id_hc);
+      $datos['remision_historia'] = $this->MHistoria->detalle_historia_remision($id_hc);
+      $datos['cups_historia'] = $this->MHistoria->detalle_historia_cups($id_hc);
+      $datos['diagnostico_historia'] = $this->MHistoria->detalle_historia_diagnostico($id_hc);
+
+      $datos['antecedentes_personales'] = $this->MHistoria->detalle_antecedentes_personales($id_hc);
+
+      $datos['dato_historia'] = $this->MHistoria->datos_historia($id_hc);
+
+      $this->load->view("CHistorial/hc_13.php", $datos);
+
+      $this->load->view("CPlantilla/VFooter");
+   }
+}
+
+
