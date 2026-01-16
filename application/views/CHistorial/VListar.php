@@ -147,14 +147,14 @@
 .historial-card-header {
     background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
     color: white;
-    padding: 18px 25px;
+    padding: 15px 20px;
     font-weight: 700;
-    font-size: 16px;
+    font-size: 15px;
     border-bottom: 3px solid #2874a6;
 }
 
 .historial-card-body {
-    padding: 25px;
+    padding: 15px;
 }
 
 .historial-table {
@@ -168,8 +168,8 @@
 }
 
 .historial-table thead th {
-    padding: 16px 15px;
-    font-size: 14px;
+    padding: 12px 10px;
+    font-size: 13px;
     font-weight: 700;
     color: #2c3e50;
     border: 2px solid #dee2e6;
@@ -187,9 +187,9 @@
 }
 
 .historial-table tbody td {
-    padding: 18px 15px;
+    padding: 12px 10px;
     vertical-align: middle;
-    font-size: 14px;
+    font-size: 13px;
     border: 2px solid #dee2e6;
     border-top: none;
     text-align: center;
@@ -210,21 +210,21 @@
 .patient-info .doc-number {
     font-weight: 700;
     color: #3498db;
-    font-size: 15px;
-    margin-bottom: 8px;
+    font-size: 13px;
+    margin-bottom: 4px;
 }
 
 .patient-info .patient-name {
     color: #2c3e50;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .area-badge {
     display: inline-block;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 12px;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 11px;
     font-weight: 600;
     background: #e3f2fd;
     color: #1976d2;
@@ -242,15 +242,15 @@
 
 .action-buttons {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+    flex-wrap: nowrap;
+    gap: 5px;
     justify-content: center;
     align-items: center;
 }
 
 .btn-action {
-    width: 42px;
-    height: 42px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     border: 2px solid #e0e0e0;
     background: white;
@@ -260,11 +260,12 @@
     cursor: pointer;
     transition: all 0.3s ease;
     padding: 0;
+    flex-shrink: 0;
 }
 
 .btn-action img {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     object-fit: contain;
 }
 
