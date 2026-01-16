@@ -276,7 +276,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-2">
                                 <label>Codigo</label>
-                                <input class="form-control" name="codigo" type="text" required="" id="codigo" placeholder="CODIGO..." onKeyUp="buscar_cups_codigo();">
+                                <input class="form-control" name="codigo" type="text" required="" id="codigo" placeholder="CODIGO..." autocomplete="off">
                                 <!-- Lista para autocompletar por codigo -->
                                 <div id="lista_codigo" style="display: none;">
                                     <div id="respuesta_codigo"></div>
@@ -290,7 +290,6 @@
                                     name="cup" 
                                     id="cup" 
                                     placeholder="CUPS..." 
-                                    onKeyUp="buscar_cups_nombre();" 
                                     autocomplete="off" 
                                 />
                                 <!-- Lista para autocompletar -->
@@ -579,6 +578,21 @@
 
     ///Cups busqueda
 
+    // Variable para controlar si estamos seleccionando un elemento
+    var seleccionandoElemento = false;
+
+    // Búsqueda por código con evento input
+    $("#codigo").on("input", function() {
+        if (seleccionandoElemento) return;
+        buscar_cups_codigo();
+    });
+
+    // Búsqueda por nombre con evento input
+    $("#cup").on("input", function() {
+        if (seleccionandoElemento) return;
+        buscar_cups_nombre();
+    });
+
     function buscar_cups_codigo() {
         var textoBusqueda = $("input#codigo").val().trim();
         var documento = $("input#documento").val();
@@ -608,72 +622,80 @@
     }
 
     function buscar_cups_nombre() {
-    var textoBusqueda = $("input#cup").val().trim();
-    var documento = $("input#documento").val();
-    var agenda = $("#idAgenda").val();
+        var textoBusqueda = $("input#cup").val().trim();
+        var documento = $("input#documento").val();
+        var agenda = $("#idAgenda").val();
 
-    // Evitar consultas vacías
-    if (textoBusqueda !== "") {
-        // Mostrar un mensaje de carga
-        $("#respuesta_nombre").html("<div>Cargando...</div>");
-        $('#lista_nombre').show();
-
-        // Hacer la solicitud AJAX
-        $.post("<?= base_url('index.php/CCups_Contratado/cups_nombre_detalle') ?>", {
-            valorBusqueda: textoBusqueda,
-            documento: documento,
-            agenda: agenda
-        })
-        .done(function(data) {
-            // Mostrar los resultados
-            $("#respuesta_nombre").html(data);
+        // Evitar consultas vacías
+        if (textoBusqueda !== "") {
+            // Mostrar un mensaje de carga
+            $("#respuesta_nombre").html("<div>Cargando...</div>");
             $('#lista_nombre').show();
-        })
-        .fail(function() {
-            // Mostrar mensaje de error si falla
-            $("#respuesta_nombre").html("<div class='text-danger'>Error al cargar resultados</div>");
-        });
-    } else {
-        // Ocultar la lista si no hay texto
-        $('#lista_nombre').hide();
-        $("#cups_contratado").val("");
-        $("#codigo").val("");
+
+            // Hacer la solicitud AJAX
+            $.post("<?= base_url('index.php/CCups_Contratado/cups_nombre_detalle') ?>", {
+                valorBusqueda: textoBusqueda,
+                documento: documento,
+                agenda: agenda
+            })
+            .done(function(data) {
+                // Mostrar los resultados
+                $("#respuesta_nombre").html(data);
+                $('#lista_nombre').show();
+            })
+            .fail(function() {
+                // Mostrar mensaje de error si falla
+                $("#respuesta_nombre").html("<div class='text-danger'>Error al cargar resultados</div>");
+            });
+        } else {
+            // Ocultar la lista si no hay texto
+            $('#lista_nombre').hide();
+            $("#cups_contratado").val("");
+            $("#codigo").val("");
+        }
     }
-}
 
-// Delegar el clic en elementos dinámicos para evitar problemas
-$(document).on("click", ".elemento-lista", function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    var elemento = $(this);
-    var nombreCup = elemento.data("nombre");
-    var codigoCup = elemento.data("codigo");
-    var cupsContratado = elemento.data("cups-contratado");
-    var tarifa = elemento.data("tarifa");
-    var categoria = elemento.data("categoria");
-    var pacienteCategoria = elemento.data("paciente-categoria");
+    // Delegar el clic en elementos dinámicos para evitar problemas
+    $(document).on("click", ".elemento-lista", function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Activar flag para evitar trigger de búsqueda
+        seleccionandoElemento = true;
+        
+        var elemento = $(this);
+        var nombreCup = elemento.data("nombre");
+        var codigoCup = elemento.data("codigo");
+        var cupsContratado = elemento.data("cups-contratado");
+        var tarifa = elemento.data("tarifa");
+        var categoria = elemento.data("categoria");
+        var pacienteCategoria = elemento.data("paciente-categoria");
 
-    // Asignar valores a los inputs
-    $("input#cup").val(nombreCup);
-    $("#codigo").val(codigoCup);
-    $("#cups_contratado").val(cupsContratado);
-    
-    // Ocultar los listados
-    $('#lista_nombre').hide();
-    $('#lista_codigo').hide();
-    $('#mensaje').hide();
-    
-    console.log("CUPS seleccionado: " + nombreCup + " - " + codigoCup);
-});
-
-// Cerrar el listado si el usuario hace clic fuera
-$(document).on("click", function(e) {
-    if (!$(e.target).closest("#lista_nombre, #cup, #lista_codigo, #codigo").length) {
+        // Asignar valores a los inputs
+        $("input#cup").val(nombreCup);
+        $("#codigo").val(codigoCup);
+        $("#cups_contratado").val(cupsContratado);
+        
+        // Ocultar los listados
         $('#lista_nombre').hide();
         $('#lista_codigo').hide();
-    }
-});
+        $('#mensaje').hide();
+        
+        console.log("CUPS seleccionado: " + nombreCup + " - " + codigoCup);
+        
+        // Desactivar flag después de un pequeño delay
+        setTimeout(function() {
+            seleccionandoElemento = false;
+        }, 100);
+    });
+
+    // Cerrar el listado si el usuario hace clic fuera
+    $(document).on("click", function(e) {
+        if (!$(e.target).closest("#lista_nombre, #cup, #lista_codigo, #codigo").length) {
+            $('#lista_nombre').hide();
+            $('#lista_codigo').hide();
+        }
+    });
 
 
 
