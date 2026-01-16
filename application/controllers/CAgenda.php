@@ -64,15 +64,10 @@ class CAgenda extends CI_Controller
 
     $data = $this->MAgenda->getAgenda($idUsuario, $ageFecha, $idProceso);
 
-    // Display schedule in a table format
-    echo "<div class='container'>";
-    echo "<h5></h5>";
-    echo "<h5></h5>";
-    echo "<table class='table table-bordered'>";
-
     if (sizeof($data) > 0) {
         $ageHoraInicio = $data[0]->ageHoraInicio;
         $ageHoraInicio = $this->addMinutes($ageHoraInicio, 0);
+        
         foreach ($data as $d) {
             // Contar citas para esta agenda específica
             $contador_citas = $this->MAgenda->contar_citas_por_agenda($d->idAgenda);
@@ -90,28 +85,71 @@ class CAgenda extends CI_Controller
                 }
             }
             
-            echo "<tr>";
-            echo "<tr><td colspan='7'><center>AGENDA DE : <b>" . $d->ageFecha . "</b></center></td></tr>";
-            echo "<td>Profesional</td>";
-            echo "<td>Area</td>";
-            echo "<td>Sede</td>";
-            echo "<td>Brigada</td>";
-            echo "<td><b>Citas Programadas:</b> $citas_programadas</td>";
-           
-            echo "<td>Opcion</td>";
-            echo "</tr>";
-            echo "<tbody>";
-
-            echo "<tr><td>" . $d->usuNombre . " " . $d->usuApellido . "</td>";
-            echo "<td>" . $d->proNombre . "</td>";
-            echo "<td>" . $d->sedNombre . "</td>";
-            echo "<td>" . $d->briNombre . "</td>";
-            echo "<td><b>Citas Finalizadas:</b> $citas_finalizadas</td>";
+            // Convertir fecha a español
+            setlocale(LC_TIME, 'es_ES.UTF-8', 'es_ES', 'esp');
+            $fecha_formateada = strftime("%A, %d de %B de %Y", strtotime($d->ageFecha));
             
-            echo "<td><a class='btn btn-danger' onclick=eliminar(\"{$d->idAgenda}\")>BORRAR</a> </td></tr>";
+            echo "<div class='agenda-display-card'>";
+            echo "<div class='agenda-info-header'>";
+            echo "<h5><i class='fa fa-calendar-alt'></i> Agenda - " . ucfirst($fecha_formateada) . "</h5>";
+            
+            echo "<div class='agenda-details'>";
+            
+            echo "<div class='agenda-detail-item'>";
+            echo "<i class='fa fa-user-md'></i>";
+            echo "<div><span class='label'>Profesional</span><span class='value'>" . $d->usuNombre . " " . $d->usuApellido . "</span></div>";
+            echo "</div>";
+            
+            echo "<div class='agenda-detail-item'>";
+            echo "<i class='fa fa-stethoscope'></i>";
+            echo "<div><span class='label'>Área</span><span class='value'>" . $d->proNombre . "</span></div>";
+            echo "</div>";
+            
+            echo "<div class='agenda-detail-item'>";
+            echo "<i class='fa fa-building'></i>";
+            echo "<div><span class='label'>Sede</span><span class='value'>" . $d->sedNombre . "</span></div>";
+            echo "</div>";
+            
+            echo "<div class='agenda-detail-item'>";
+            echo "<i class='fa fa-users'></i>";
+            echo "<div><span class='label'>Brigada</span><span class='value'>" . $d->briNombre . "</span></div>";
+            echo "</div>";
+            
+            echo "<div class='agenda-detail-item'>";
+            echo "<i class='fa fa-clipboard-list'></i>";
+            echo "<div><span class='label'>Citas Programadas</span><span class='value'>" . $citas_programadas . "</span></div>";
+            echo "</div>";
+            
+            echo "<div class='agenda-detail-item'>";
+            echo "<i class='fa fa-check-circle'></i>";
+            echo "<div><span class='label'>Citas Finalizadas</span><span class='value'>" . $citas_finalizadas . "</span></div>";
+            echo "</div>";
+            
+            echo "</div>"; // fin agenda-details
+            
+            echo "<div style='margin-top: 15px;'>";
+            echo "<button class='btn-agenda-action btn-agenda-danger' onclick='eliminar(\"{$d->idAgenda}\")'><i class='fa fa-trash'></i> Borrar Agenda</button>";
+            echo "</div>";
+            
+            echo "</div>"; // fin agenda-info-header
+
+            // Tabla de citas
+            echo "<table class='agenda-table'>";
+            echo "<thead>";
+            echo "<tr>";
+            echo "<th style='width: 80px;'>#</th>";
+            echo "<th style='width: 120px;'>Horario</th>";
+            echo "<th>Paciente</th>";
+            echo "<th style='width: 130px;'>Documento</th>";
+            echo "<th style='width: 130px;'>Estado</th>";
+            echo "<th style='width: 200px;'>Acciones</th>";
+            echo "</tr>";
+            echo "</thead>";
+            echo "<tbody>";
 
             // Inicializar contador de citas para esta agenda
             $numero_cita = 0;
+            $tiene_citas = false;
             
             while (strtotime($ageHoraInicio) < strtotime($d->ageHoraFin)) {
                 $hora_final = $this->addMinutes($ageHoraInicio, $d->ageIntervalo);
@@ -120,55 +158,90 @@ class CAgenda extends CI_Controller
                 $fechaEnd = date($d->ageFecha . ' ' . $hora_final);
 
                 echo "<tr>";
-                echo "<th colspan='3'>Hora</th>";
-                echo "<th colspan='3'>Datos</th>";
-                echo "</tr>";
-
-                echo "<tr>";
                 
                 // Mostrar número de cita si hay una cita agendada
                 if ($statusHorario > 0 && in_array($statusHorario[0]->citEstado, ['PROGRAMADO', 'FINALIZADO', 'FINALIZADO Y FACTURADO', 'FACTURADO'])) {
                     $numero_cita++;
-                    echo "<td colspan='3'><strong style='color: #007bff; font-size: 18px;'>Cita #$numero_cita</strong><br>{$ageHoraInicio}/{$hora_final}</td>";
+                    $tiene_citas = true;
+                    echo "<td><span class='cita-numero'>Cita #$numero_cita</span></td>";
                 } else {
-                    echo "<td colspan='3'>{$ageHoraInicio}/{$hora_final}</td>";
+                    echo "<td><span style='color: #95a5a6;'>--</span></td>";
                 }
                 
-                echo "<td colspan='3'>";
-                if ($statusHorario > 0 && $statusHorario[0]->citEstado == 'PROGRAMADO') {
-                    echo "Paciente: " . $statusHorario[0]->pacNombre . " " . $statusHorario[0]->pacNombre2 . " " . $statusHorario[0]->pacApellido . " " . $statusHorario[0]->pacApellido2 . "<br>";
-                    echo "Identificación: " . $statusHorario[0]->pacDocumento . "<br>";
-                    echo "Estado cita: " . $statusHorario[0]->citEstado . "<br>";
-                    echo "<a onclick=cancel(\"{$statusHorario[0]->idCita}\") data-toggle='modal' data-target='.bd-example-modal-lg-cancelar-cita' class='btn btn-danger'>Cancelar cita</a>";
-                } elseif ($statusHorario > 0 && $statusHorario[0]->citEstado == 'FINALIZADO') {
-                    echo "Paciente: " . $statusHorario[0]->pacNombre . " " . $statusHorario[0]->pacNombre2 . " " . $statusHorario[0]->pacApellido . " " . $statusHorario[0]->pacApellido2 . "<br>";
-                    echo "Identificación: " . $statusHorario[0]->pacDocumento . "<br>";
-                    echo "<p style='color:red'>" . $statusHorario[0]->citEstado . "</p>";
-                } elseif ($statusHorario > 0 && $statusHorario[0]->citEstado == 'FINALIZADO Y FACTURADO') {
-                    echo "Paciente: " . $statusHorario[0]->pacNombre . " " . $statusHorario[0]->pacNombre2 . " " . $statusHorario[0]->pacApellido . " " . $statusHorario[0]->pacApellido2 . "<br>";
-                    echo "Identificación: " . $statusHorario[0]->pacDocumento . "<br>";
-                    echo "<p style='color:red'>" . $statusHorario[0]->citEstado . "</p>";
-                } elseif ($statusHorario > 0 && $statusHorario[0]->citEstado == 'FACTURADO') {
-                    echo "Paciente: " . $statusHorario[0]->pacNombre . " " . $statusHorario[0]->pacNombre2 . " " . $statusHorario[0]->pacApellido . " " . $statusHorario[0]->pacApellido2 . "<br>";
-                    echo "Identificación: " . $statusHorario[0]->pacDocumento . "<br>";
-                    echo "<p style='color:red'>" . $statusHorario[0]->citEstado . "</p>";
+                echo "<td><span class='cita-hora'>{$ageHoraInicio}<br><small style='color: #7f8c8d;'>a</small><br>{$hora_final}</span></td>";
+                
+                // Columna Paciente
+                echo "<td>";
+                if ($statusHorario > 0 && in_array($statusHorario[0]->citEstado, ['PROGRAMADO', 'FINALIZADO', 'FINALIZADO Y FACTURADO', 'FACTURADO'])) {
+                    echo "<span class='cita-paciente'>" . $statusHorario[0]->pacNombre . " " . $statusHorario[0]->pacNombre2 . " " . $statusHorario[0]->pacApellido . " " . $statusHorario[0]->pacApellido2 . "</span>";
                 } else {
-                    echo "<a class='btn btn-primary' data-toggle='modal' data-target='.bd-example-modal-lg'
-                    onclick='save_agenda(\"{$d->idProceso}\",\"{$d->idUsuario}\",\"{$d->ageFecha}\",\"{$fechaInit}\",\"{$fechaEnd}\",\"{$d->idAgenda}\")'>Agregar Cita</a>";
+                    echo "<span style='color: #95a5a6;'>Sin asignar</span>";
                 }
                 echo "</td>";
+                
+                // Columna Documento
+                echo "<td>";
+                if ($statusHorario > 0 && in_array($statusHorario[0]->citEstado, ['PROGRAMADO', 'FINALIZADO', 'FINALIZADO Y FACTURADO', 'FACTURADO'])) {
+                    echo "<span class='cita-documento'>" . $statusHorario[0]->pacDocumento . "</span>";
+                } else {
+                    echo "<span style='color: #95a5a6;'>--</span>";
+                }
+                echo "</td>";
+                
+                // Columna Estado
+                echo "<td>";
+                if ($statusHorario > 0) {
+                    $estado = $statusHorario[0]->citEstado;
+                    if ($estado == 'PROGRAMADO') {
+                        echo "<span class='badge-estado badge-programado'>Programado</span>";
+                    } elseif ($estado == 'FINALIZADO') {
+                        echo "<span class='badge-estado badge-finalizado'>Finalizado</span>";
+                    } elseif ($estado == 'FINALIZADO Y FACTURADO') {
+                        echo "<span class='badge-estado badge-finalizado'>Finalizado y Facturado</span>";
+                    } elseif ($estado == 'FACTURADO') {
+                        echo "<span class='badge-estado badge-finalizado'>Facturado</span>";
+                    }
+                } else {
+                    echo "<span style='color: #95a5a6;'>Disponible</span>";
+                }
+                echo "</td>";
+                
+                // Columna Acciones
+                echo "<td>";
+                if ($statusHorario > 0 && $statusHorario[0]->citEstado == 'PROGRAMADO') {
+                    echo "<button onclick='cancel(\"{$statusHorario[0]->idCita}\")' data-toggle='modal' data-target='.bd-example-modal-lg-cancelar-cita' class='btn-agenda-action btn-agenda-danger'><i class='fa fa-times'></i> Cancelar</button>";
+                } elseif ($statusHorario == 0 || !in_array($statusHorario[0]->citEstado, ['PROGRAMADO', 'FINALIZADO', 'FINALIZADO Y FACTURADO', 'FACTURADO'])) {
+                    echo "<button class='btn-agenda-action btn-agenda-primary' data-toggle='modal' data-target='.bd-example-modal-lg' onclick='save_agenda(\"{$d->idProceso}\",\"{$d->idUsuario}\",\"{$d->ageFecha}\",\"{$fechaInit}\",\"{$fechaEnd}\",\"{$d->idAgenda}\")'><i class='fa fa-plus'></i> Agregar Cita</button>";
+                } else {
+                    echo "<span style='color: #95a5a6;'>--</span>";
+                }
+                echo "</td>";
+                
                 echo "</tr>";
 
                 $ageHoraInicio = $hora_final;
             }
+            
+            // Si no hay citas, mostrar mensaje
+            if (!$tiene_citas) {
+                echo "<tr><td colspan='6' class='empty-state' style='padding: 30px;'>";
+                echo "<i class='fa fa-calendar-times'></i>";
+                echo "<h5>Sin citas agendadas</h5>";
+                echo "<p>Esta agenda aún no tiene citas programadas</p>";
+                echo "</td></tr>";
+            }
+            
             echo "</tbody>";
+            echo "</table>";
+            echo "</div>"; // fin agenda-display-card
         }
     } else {
-        echo "<tr><td>No se encontró ninguna agenda asociada con los datos ingresados.</td></tr>";
+        echo "<div class='empty-state'>";
+        echo "<i class='fa fa-calendar-times'></i>";
+        echo "<h5>No se encontraron agendas</h5>";
+        echo "<p>No se encontró ninguna agenda asociada con los datos ingresados</p>";
+        echo "</div>";
     }
-
-    echo "</table>";
-    echo "</div>";
 }
 
   // Get appointment status for a specific time slot

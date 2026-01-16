@@ -1,4 +1,285 @@
 <style type="text/css">
+/* Estilos mejorados para la vista de agenda */
+.agenda-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.agenda-header-section {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border: 2px solid #e0e0e0;
+}
+
+.agenda-header-section h4 {
+    color: #2c3e50;
+    margin: 0 0 20px 0;
+    font-weight: 700;
+    font-size: 22px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.agenda-header-section h4 i {
+    color: #3498db;
+}
+
+/* Skeleton Loader */
+.skeleton-loader {
+    display: block;
+    margin: 20px 0;
+}
+
+.skeleton-table {
+    width: 100%;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.skeleton-header {
+    height: 60px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s ease-in-out infinite;
+}
+
+.skeleton-row {
+    height: 50px;
+    background: linear-gradient(90deg, #f8f8f8 25%, #ececec 50%, #f8f8f8 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s ease-in-out infinite;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Tarjetas de agenda */
+.agenda-display-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.12);
+    border: 2px solid #e0e0e0;
+    margin-bottom: 25px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.agenda-display-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 25px rgba(0,0,0,0.18);
+    border-color: #3498db;
+}
+
+.agenda-info-header {
+    background: #f8f9fa;
+    padding: 20px;
+    border-bottom: 3px solid #3498db;
+}
+
+.agenda-info-header h5 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #2c3e50;
+}
+
+.agenda-info-header h5 i {
+    color: #3498db;
+}
+
+.agenda-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.agenda-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: white;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.agenda-detail-item i {
+    font-size: 20px;
+    color: #3498db;
+}
+
+.agenda-detail-item .label {
+    font-size: 11px;
+    color: #7f8c8d;
+    display: block;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.agenda-detail-item .value {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* Tabla profesional */
+.agenda-table {
+    width: 100%;
+    margin: 0;
+}
+
+.agenda-table thead {
+    background: #f8f9fa;
+}
+
+.agenda-table thead th {
+    padding: 15px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 2px solid #dee2e6;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+}
+
+.agenda-table tbody td {
+    padding: 15px 12px;
+    vertical-align: middle;
+    font-size: 14px;
+    border-bottom: 1px solid #e9ecef;
+    text-align: center;
+}
+
+.agenda-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.agenda-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.cita-numero {
+    font-weight: 700;
+    color: #3498db;
+    font-size: 16px;
+}
+
+.cita-hora {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 14px;
+}
+
+.cita-paciente {
+    font-weight: 500;
+}
+
+.cita-documento {
+    color: #6c757d;
+    font-size: 13px;
+}
+
+.badge-estado {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.badge-programado {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.badge-finalizado {
+    background: #e8f5e9;
+    color: #388e3c;
+}
+
+.badge-cancelado {
+    background: #ffebee;
+    color: #c62828;
+}
+
+.btn-agenda-action {
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 0 3px;
+}
+
+.btn-agenda-primary {
+    background: #3498db;
+    color: white;
+}
+
+.btn-agenda-primary:hover {
+    background: #2980b9;
+    transform: scale(1.05);
+}
+
+.btn-agenda-danger {
+    background: #e74c3c;
+    color: white;
+}
+
+.btn-agenda-danger:hover {
+    background: #c0392b;
+    transform: scale(1.05);
+}
+
+.btn-agenda-success {
+    background: #27ae60;
+    color: white;
+}
+
+.btn-agenda-success:hover {
+    background: #229954;
+    transform: scale(1.05);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6c757d;
+}
+
+.empty-state i {
+    font-size: 64px;
+    color: #dee2e6;
+    margin-bottom: 20px;
+}
+
+.empty-state h5 {
+    color: #495057;
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    color: #6c757d;
+    font-size: 14px;
+}
+
 .input_txt {
   font-size: 61%;
   width: 150px;
@@ -271,6 +552,25 @@
     <br>
     <div id="mens"></div>
     <div id="resultado" style="display: none;">
+        <!-- Skeleton Loader -->
+        <div id="skeletonLoader" class="skeleton-loader" style="display: none;">
+            <div class="skeleton-table">
+                <div class="skeleton-header"></div>
+                <div class="skeleton-row"></div>
+                <div class="skeleton-row"></div>
+                <div class="skeleton-row"></div>
+                <div class="skeleton-row"></div>
+                <div class="skeleton-row"></div>
+            </div>
+            <div class="skeleton-table">
+                <div class="skeleton-header"></div>
+                <div class="skeleton-row"></div>
+                <div class="skeleton-row"></div>
+                <div class="skeleton-row"></div>
+            </div>
+        </div>
+        <!-- Contenedor de resultados -->
+        <div id="agendaResultados"></div>
     </div>
 
     <!-- Modal Agregar -->
@@ -1159,18 +1459,20 @@
         var ageFecha = $('#fecha').val();
         var idProceso = $('#area').val();
 
-        //console.log(idUsuario +" "+ ageFecha +" "+  idProceso);
+        // Mostrar skeleton loader
+        $('#resultado').show();
+        $('#skeletonLoader').show();
+        $('#agendaResultados').html('');
 
         $.post("<?= base_url("index.php/CAgenda/mostrarAgenda") ?>", {
             usuario: idUsuario,
             fecha: ageFecha,
             proceso: idProceso
         }, function(data) {
-
-            // console.log(data);
+            // Ocultar skeleton y mostrar resultados
+            $('#skeletonLoader').hide();
             $('#crear_agenda').show();
-            $('#resultado').show();
-            $("#resultado").html(data);
+            $("#agendaResultados").html(data);
         });
     }
     //});
