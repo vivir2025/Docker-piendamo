@@ -1,112 +1,52 @@
-#-------------------------
-# Sistema Operativo
-#-------------------------
 .DS_Store
-Thumbs.db
-Desktop.ini
 
-#-------------------------
-# Variables de Entorno
-#-------------------------
-.env
-*.env.local
-*.env.*.local
-
-#-------------------------
-# CodeIgniter
-#-------------------------
 application/cache/*
 !application/cache/index.html
-!application/cache/.htaccess
 
 application/logs/*
 !application/logs/index.html
-!application/logs/.htaccess
-
-application/sessions/*
-!application/sessions/index.html
-!application/sessions/.htaccess
 
 !application/*/.htaccess
 
-#-------------------------
-# Uploads y Archivos Temporales
-#-------------------------
-uploads/*
-!uploads/.htaccess
-archivo/*
-!archivo/.gitkeep
-*.tmp
-*.bak
-*.swp
-*~
-
-#-------------------------
-# Composer
-#-------------------------
 composer.lock
-composer.phar
+
+user_guide_src/build/*
+user_guide_src/cilexer/build/*
+user_guide_src/cilexer/dist/*
+user_guide_src/cilexer/pycilexer.egg-info/*
 /vendor/
 
-#-------------------------
-# Node.js (si se usa)
-#-------------------------
-node_modules/
-npm-debug.log
-yarn-error.log
-package-lock.json
-
-#-------------------------
-# Docker
-#-------------------------
-docker/mysql/data/*
-docker/*/logs/*
-*.log
-
-#-------------------------
-# IDE y Editores
+# IDE Files
 #-------------------------
 /nbproject/
 .idea/*
-.vscode/*
-!.vscode/extensions.json
-!.vscode/settings.json
 
-# Sublime Text
+## Sublime Text cache files
 *.tmlanguage.cache
 *.tmPreferences.cache
 *.stTheme.cache
 *.sublime-workspace
 *.sublime-project
-
-# Visual Studio Code
-.history/
-
-# PhpStorm
-.phpstorm.meta.php
-_ide_helper.php
-
-#-------------------------
-# Testing
-#-------------------------
 /tests/tests/
 /tests/results/
-.phpunit.result.cache
-phpunit.xml
 
-#-------------------------
-# Build y Documentación
-#-------------------------
-user_guide_src/build/*
-user_guide_src/cilexer/build/*
-user_guide_src/cilexer/dist/*
-user_guide_src/cilexer/pycilexer.egg-info/*
+# ==========================================
+# Docker - Archivos sensibles y temporales
+# ==========================================
 
-#-------------------------
-# Archivos Sensibles
-#-------------------------
-application/config/database.php
-application/config/config.php
-*.key
-*.pem
-*.cert
+# Variables de entorno con contraseñas reales
+.env
+
+# Datos y volúmenes de Docker (MySQL, etc)
+docker/mysql/data/
+
+# Dumps de base de datos con datos sensibles
+# IMPORTANTE: 01-schema.sql puede contener datos reales de pacientes
+docker/mysql/init/01-schema.sql
+
+# Uploads de usuarios (archivos PDF, imágenes, etc)
+uploads/*
+!uploads/.gitkeep
+
+# Logs de Docker
+*.log
