@@ -1,31 +1,112 @@
+#-------------------------
+# Sistema Operativo
+#-------------------------
 .DS_Store
+Thumbs.db
+Desktop.ini
 
+#-------------------------
+# Variables de Entorno
+#-------------------------
+.env
+*.env.local
+*.env.*.local
+
+#-------------------------
+# CodeIgniter
+#-------------------------
 application/cache/*
 !application/cache/index.html
+!application/cache/.htaccess
 
 application/logs/*
 !application/logs/index.html
+!application/logs/.htaccess
+
+application/sessions/*
+!application/sessions/index.html
+!application/sessions/.htaccess
 
 !application/*/.htaccess
 
-composer.lock
+#-------------------------
+# Uploads y Archivos Temporales
+#-------------------------
+uploads/*
+!uploads/.htaccess
+archivo/*
+!archivo/.gitkeep
+*.tmp
+*.bak
+*.swp
+*~
 
-user_guide_src/build/*
-user_guide_src/cilexer/build/*
-user_guide_src/cilexer/dist/*
-user_guide_src/cilexer/pycilexer.egg-info/*
+#-------------------------
+# Composer
+#-------------------------
+composer.lock
+composer.phar
 /vendor/
 
-# IDE Files
+#-------------------------
+# Node.js (si se usa)
+#-------------------------
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+#-------------------------
+# Docker
+#-------------------------
+docker/mysql/data/*
+docker/*/logs/*
+*.log
+
+#-------------------------
+# IDE y Editores
 #-------------------------
 /nbproject/
 .idea/*
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
 
-## Sublime Text cache files
+# Sublime Text
 *.tmlanguage.cache
 *.tmPreferences.cache
 *.stTheme.cache
 *.sublime-workspace
 *.sublime-project
+
+# Visual Studio Code
+.history/
+
+# PhpStorm
+.phpstorm.meta.php
+_ide_helper.php
+
+#-------------------------
+# Testing
+#-------------------------
 /tests/tests/
 /tests/results/
+.phpunit.result.cache
+phpunit.xml
+
+#-------------------------
+# Build y Documentación
+#-------------------------
+user_guide_src/build/*
+user_guide_src/cilexer/build/*
+user_guide_src/cilexer/dist/*
+user_guide_src/cilexer/pycilexer.egg-info/*
+
+#-------------------------
+# Archivos Sensibles
+#-------------------------
+application/config/database.php
+application/config/config.php
+*.key
+*.pem
+*.cert

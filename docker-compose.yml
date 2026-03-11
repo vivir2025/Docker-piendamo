@@ -1,0 +1,28 @@
+services:
+  # Servicio de aplicación PHP/Apache
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: piendamo_app
+    restart: always
+    volumes:
+      # Montar código fuente
+      - .:/var/www/html
+      # Persistir uploads
+      - ./uploads:/var/www/html/uploads
+      # Persistir logs
+      - ./application/logs:/var/www/html/application/logs
+    environment:
+      - DB_HOST=db
+      - DB_NAME=${MYSQL_DATABASE}
+      - DB_USER=${MYSQL_USER}
+      - DB_PASSWORD=${MYSQL_PASSWORD}
+    networks:
+      - ips_network
+
+# Redes
+networks:
+  ips_network:
+    name: ips_ips_network
+    external: true
