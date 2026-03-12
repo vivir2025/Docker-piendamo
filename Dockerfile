@@ -43,8 +43,8 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-av
 RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
 # Copiar configuración de Apache para subdirectorios
-COPY docker/apache/cajibio.conf /etc/apache2/conf-available/cajibio.conf
-RUN a2enconf cajibio
+COPY docker/apache/piendamo.conf /etc/apache2/conf-available/piendamo.conf
+RUN a2enconf piendamo
 
 # Copiar script de entrypoint personalizado
 COPY docker/scripts/entrypoint.sh /usr/local/bin/entrypoint.sh

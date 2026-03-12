@@ -45,7 +45,7 @@ if [ -d /var/www/html/application/sessions ]; then
 fi
 
 echo "🎉 Contenedor configurado exitosamente!"
-echo "🌐 Aplicación disponible en: http://localhost/cajibio"
+echo "🌐 Aplicación disponible en: http://localhost/piendamo"
 echo "🗃️  phpMyAdmin disponible en: http://localhost:8080/"
 
 # Ejecutar el comando proporcionado (apache2-foreground)
