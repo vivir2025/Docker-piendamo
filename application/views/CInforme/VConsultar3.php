@@ -1,4 +1,4 @@
-<!-- This is the view where it generates the base that is needed to report ... -->
+<!-- This is the view where the facturacion report is generated -->
 
 <style>
 /* Modal de descarga profesional */
@@ -212,11 +212,11 @@
 
 <div class="informe-container">
     <div class="informe-header">
-        <h3>📊 Informe Base RCV</h3>
-        <p>Genere su informe seleccionando el rango de fechas</p>
+        <h3>💰 Informe de Facturación</h3>
+        <p>Genere su informe de facturación seleccionando el rango de fechas</p>
     </div>
 
-    <form id="formInforme" action="<?= site_url('CInforme/exportar') ?>" method="post">
+    <form id="formInforme" action="<?= site_url('CInforme/exportar3') ?>" method="post">
         <div style="display: flex; align-items: center; justify-content: center; gap: 30px; flex-wrap: wrap;">
             <div style="display: flex; align-items: center; gap: 10px;">
                 <label style="font-weight: 600; color: #2c3e50; margin: 0;">📅 Desde:</label>
@@ -246,7 +246,7 @@
         <div class="download-progress-bar">
             <div class="download-progress-fill"></div>
         </div>
-        <div class="download-status">Procesando datos del informe</div>
+        <div class="download-status">Procesando datos de facturación</div>
     </div>
 </div>
 
@@ -262,7 +262,7 @@ document.getElementById('formInforme').addEventListener('submit', function(e) {
         modal.classList.add('download-success');
         modal.querySelector('.download-title').textContent = '¡Descarga Completada!';
         modal.querySelector('.download-subtitle').textContent = 'El archivo se ha descargado correctamente';
-        modal.querySelector('.download-status').textContent = 'Informe Base RCV generado';
+        modal.querySelector('.download-status').textContent = 'Informe de facturación generado correctamente';
         modal.querySelector('.download-icon-container i').className = 'fas fa-check';
         
         // Ocultar modal después de 2 segundos
@@ -272,7 +272,7 @@ document.getElementById('formInforme').addEventListener('submit', function(e) {
             modal.classList.remove('download-success');
             modal.querySelector('.download-title').textContent = 'Generando Informe';
             modal.querySelector('.download-subtitle').textContent = 'Por favor espere mientras procesamos su solicitud...';
-            modal.querySelector('.download-status').textContent = 'Procesando datos del informe';
+            modal.querySelector('.download-status').textContent = 'Procesando datos de facturación';
             modal.querySelector('.download-icon-container i').className = 'fas fa-file-download';
         }, 2000);
     }, 3000);

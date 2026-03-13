@@ -23,7 +23,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://192.168.11.5/piendamo/';
+// Detectar automáticamente si estamos en Docker o local
+if (getenv('DB_HOST') === 'db') {
+    // Entorno Docker
+    $config['base_url'] = 'http://192.168.10.129/cajibio/';
+} else {
+    // Entorno local con XAMPP
+    $config['base_url'] = 'http://192.168.10.129/cajibio/';
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -223,7 +230,7 @@ $config['allow_get_array'] = TRUE;
 | your log files will fill up very fast.
 |
 */
-$config['log_threshold'] = 0;
+$config['log_threshold'] = 1;
 
 /*
 |--------------------------------------------------------------------------
@@ -475,7 +482,7 @@ $config['csrf_exclude_uris'] = array();
 | by the output class.  Do not 'echo' any values with compression enabled.
 |
 */
-$config['compress_output'] = FALSE;
+$config['compress_output'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------
@@ -520,4 +527,4 @@ $config['rewrite_short_tags'] = FALSE;
 | Comma-separated:	'10.0.1.200,192.168.5.0/24'
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
-$config['proxy_piendamo'] = '';
+$config['proxy_cajibio'] = '';

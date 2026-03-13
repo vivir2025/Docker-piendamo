@@ -1,3 +1,47 @@
+<!-- ═══ Google-style loader — IPS Cajibio ═══════════════════════════════ -->
+<style>
+/* ── Barra de progreso superior (estilo Google/YouTube) ── */
+#ips-topbar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    width: 0%;
+    z-index: 99999;
+    background: linear-gradient(90deg, #007bff 0%, #00d4ff 50%, #007bff 100%);
+    background-size: 200% 100%;
+    border-radius: 0 2px 2px 0;
+    box-shadow: 0 0 12px rgba(0, 123, 255, 0.7);
+    transition: width 0.3s ease;
+    animation: ips-shine 1.2s linear infinite;
+    display: none;
+}
+@keyframes ips-shine {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ── Shimmer para skeleton rows ── */
+@keyframes ips-shimmer {
+    0%   { background-position: -600px 0; }
+    100% { background-position: 600px 0; }
+}
+.ips-skeleton td {
+    padding: 12px 10px !important;
+    border-color: #e9ecef !important;
+}
+.ips-ph {
+    height: 13px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #e8ecf0 25%, #f8f9fa 50%, #e8ecf0 75%);
+    background-size: 600px 100%;
+    animation: ips-shimmer 1.4s ease-in-out infinite;
+    display: inline-block;
+}
+</style>
+
+<!-- Barra superior -->
+<div id="ips-topbar"></div>
+
 <!-- This is the view where I list patients where I can delete and update patient information -->
     <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -277,60 +321,109 @@
                                 <th>Eliminar</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <?php
-                                foreach ($paciente as $pac) {
-                                ?>
-
-                                <tr>
-                                    <td><?= $pac->pacDocumento; ?></td>
-                                    <td><?= $pac->pacNombre . " " . $pac->pacNombre2 ." ". $pac->pacApellido ." ". $pac->pacApellido2 ; ?></td>
-                                    <td><?= $pac->pacCorreo; ?></td>
-                                    <td> <?php
-                                            list($anio, $mes, $dia) = explode("-", $pac->pacFecNacimiento);
-                                            $anio_dif = date("Y") - $anio;
-                                            $mes_dif = date("m") - $mes;
-                                            $dia_dif = date("d") - $dia;
-
-                                            if ($dia_dif < 0 || $mes_dif < 0) {
-                                                $anio_dif--;
-                                                //return $anio_dif;
-                                            }
-
-                                            echo $anio_dif;
-
-                                            ?>
-
-                                    </td>
-                                    
-                                    <td>
-                                        <?= $pac->tipNombre; ?>
-                                    </td>
-                                    <td>
-                                        <?= $pac->tipo_novedad; ?>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-primary" href="<?= base_url("index.php/CPaciente/modRecuperar/$pac->idPaciente") ?>">Actualizar</a>
-                                    </td>
-                                    <td>
-                                        <?php if ($pac->pacEstado == 'ACTIVO') { ?>
-
-                                            <a class="btn btn-danger" onclick="eliminar('<?php echo $pac->idPaciente; ?>')">Eliminar</a>
-
-                                        <?php } ?>
-                                    </td>
-                                </tr>
-                            <?php
-                                }
-                                ?>
-                </div>
+                        <tbody id="skeleton-body">
+                            <?php for ($i = 0; $i < 8; $i++): ?>
+                            <tr class="ips-skeleton">
+                                <td><span class="ips-ph" style="width:<?= [72,88,65,80,75,90,68,70][$i] ?>px"></span></td>
+                                <td><span class="ips-ph" style="width:<?= [160,140,180,155,170,145,165,150][$i] ?>px"></span></td>
+                                <td><span class="ips-ph" style="width:<?= [130,115,140,125,135,120,130,110][$i] ?>px"></span></td>
+                                <td><span class="ips-ph" style="width:30px"></span></td>
+                                <td><span class="ips-ph" style="width:<?= [80,90,70,85,75,88,72,82][$i] ?>px"></span></td>
+                                <td><span class="ips-ph" style="width:55px"></span></td>
+                                <td><span class="ips-ph" style="width:78px; height:28px; border-radius:4px; background:linear-gradient(90deg,#cfe2ff 25%,#e7f1ff 50%,#cfe2ff 75%); background-size:600px 100%; animation:ips-shimmer 1.4s ease-in-out infinite;"></span></td>
+                                <td><span class="ips-ph" style="width:65px; height:28px; border-radius:4px; background:linear-gradient(90deg,#f8d7da 25%,#fde8e9 50%,#f8d7da 75%); background-size:600px 100%; animation:ips-shimmer 1.4s ease-in-out infinite;"></span></td>
+                            </tr>
+                            <?php endfor; ?>
+                        </tbody>
+                        </table>
+                </div><!-- /.table-responsive -->
         </div>
     </div>
 </div>
+
 <script type="text/javascript">
     function eliminar(id) {
         if (confirm('¿Desea eliminar el registro?')) {
             document.location.href = "<?php echo base_url() . 'index.php/CPaciente/eliminar/' ?>" + id;
-            }
+        }
     }
+
+    // ── Barra de progreso ──────────────────────────────────────────────────
+    var $bar = $('#ips-topbar'), barTimer;
+
+    function barStart() {
+        clearTimeout(barTimer);
+        $bar.stop(true).css({ width: '0%', display: 'block' }).animate({ width: '75%' }, 800);
+    }
+    function barDone() {
+        $bar.animate({ width: '100%' }, 200, function () {
+            var self = $(this);
+            barTimer = setTimeout(function () { self.fadeOut(300).css('width', '0%'); }, 250);
+        });
+    }
+
+    $(document).ready(function () {
+        var tabla = $('#example').DataTable({
+            destroy: true,
+            serverSide: true,
+            processing: true,
+            language: {
+                decimal:        ',',
+                thousands:      '.',
+                emptyTable:     'No hay datos disponibles en la tabla',
+                info:           'Mostrando _START_ a _END_ de _TOTAL_ registros',
+                infoEmpty:      'Mostrando 0 a 0 de 0 registros',
+                infoFiltered:   '(filtrado de _MAX_ registros totales)',
+                infoPostFix:    '',
+                lengthMenu:     'Mostrar _MENU_ registros',
+                loadingRecords: 'Cargando...',
+                processing:     'Procesando...',
+                search:         'Buscar:',
+                searchPlaceholder: 'Documento, nombre, correo...',
+                zeroRecords:    'No se encontraron resultados',
+                paginate: {
+                    first:    'Primero',
+                    last:     'Último',
+                    next:     'Siguiente',
+                    previous: 'Anterior'
+                },
+                aria: {
+                    sortAscending:  ': activar para ordenar la columna de forma ascendente',
+                    sortDescending: ': activar para ordenar la columna de forma descendente'
+                }
+            },
+            ajax: {
+                url: '<?= base_url("index.php/CPaciente/ajax_pacientes") ?>',
+                type: 'POST'
+            },
+            columns: [
+                { title: 'Documento',       data: 0 },
+                { title: 'Nombre',          data: 1 },
+                { title: 'Correo',          data: 2 },
+                { title: 'Edad',            data: 3, orderable: false },
+                { title: 'Tipo Afiliación', data: 4 },
+                { title: 'Estado',          data: 5 },
+                { title: 'Actualizar',      data: 6, orderable: false },
+                { title: 'Eliminar',        data: 7, orderable: false }
+            ],
+            order: [[1, 'asc']],
+            pageLength: 25,
+            lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
+            responsive: true
+        });
+
+        // ── Hooks de carga ─────────────────────────────────────────────────
+        tabla.on('preXhr.dt', function () {
+            barStart();
+        });
+
+        tabla.on('draw.dt', function () {
+            barDone();
+            // Elimina las skeleton rows la primera vez
+            $('#skeleton-body tr.ips-skeleton').fadeOut(200, function () { $(this).remove(); });
+        });
+
+        // Primera carga: la barra arranca de inmediato
+        barStart();
+    });
 </script>

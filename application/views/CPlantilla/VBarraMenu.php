@@ -108,7 +108,7 @@ if (!$this->session->userdata('login')) {
                     <button  id=miBoton type="button" class="btn btn-primary">   Informes </button>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a  id=miBoton class="dropdown-item" href="<?= site_url('CInforme/informe1') ?>">Informe </a>
+                        <a  id=miBoton class="dropdown-item" href="<?= site_url('CInforme/informe1') ?>">Informe 1552</a>
 						<a  id=miBoton class="dropdown-item" href="<?= site_url('CHistoria/contador') ?>">Contador </a>
 						  						
                     </div>
@@ -149,7 +149,7 @@ if (!$this->session->userdata('login')) {
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a  id=miBoton class="dropdown-item" href="<?= site_url('CHistorial') ?>">Historia</a>
-                        <a  id=miBoton class="dropdown-item" href="<?= site_url('CHistoria/visitas') ?>">Visitas Domiciliarias</a>
+                        <a  id=miBoton class="dropdown-item" href="https://app-fnpv-web.nacerparavivir.org/login" target="_blank">Visitas Domiciliarias</a>
                         <a  id=miBoton class="dropdown-item" href="<?= site_url('CHistoria/desentimiento') ?>">Disentimientos</a>
                         <a  id=miBoton class="dropdown-item" href="http://temporal.nacerparavivir.org/" target="_blank">Historia Antigua</a>
                      </div>
@@ -167,10 +167,7 @@ if (!$this->session->userdata('login')) {
                         <a  id=miBoton  class="dropdown-item" href="<?= site_url('CEmpresa') ?>">Admin. EPS</a>
                         <a  id=miBoton class="dropdown-item" href="<?= site_url('CContrato') ?>">Admin. Contrato</a>
                         <a  id=miBoton class="dropdown-item" href="<?= site_url('CHistoria/upload_paraclinico') ?>">Admin. Paraclinico</a>
-                        <a  id=miBoton class="dropdown-item" href="<?= site_url('CHistoria/upload_Visitas') ?>">Admin. Visitas</a>
-						<a  id=miBoton class="dropdown-item" href="https://lookerstudio.google.com/s/uVld-qx6KSo" target="_blank">Dashboard Visitas</a>
-						<a  id=miBoton class="dropdown-item" href="https://lookerstudio.google.com/s/plQT6uUJUfE" target="_blank">Mapa de Calor</a>
-
+                        
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -178,8 +175,10 @@ if (!$this->session->userdata('login')) {
                     <button  id=miBoton type="button" class="btn btn-primary">   Informes </button>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a  id=miBoton class="dropdown-item" href="<?= site_url('CInforme') ?>">Informe </a>
-                        <a  id=miBoton class="dropdown-item" href="<?= site_url('CInforme/informe1') ?>">Informe </a>
+                        <a  id=miBoton class="dropdown-item" href="<?= site_url('CInforme') ?>">Informe Rcv</a>
+                        <a  id=miBoton class="dropdown-item" href="<?= site_url('CInforme/informe1') ?>">Informe 1552</a>
+                        <a  id=miBoton class="dropdown-item" href="<?= site_url('CInforme/informe3') ?>">Informe Facturación</a>
+                        <a  id=miBoton class="dropdown-item" href="<?= site_url('CInforme/informe4') ?>">Generar RIPS (JSON)</a>
 						<a  id=miBoton class="dropdown-item" href="<?= site_url('CHistoria/contador') ?>">Contador </a>
                         <a id="miBoton" class="dropdown-item" href="<?= 'https://docs.google.com/spreadsheets/d/14G2MORWGfClUHYePgwSnsz4_n-YuHpFH0xB34BuAZfY/edit?usp=sharing' ?>" target="_blank">Generador de Base App Cajibio</a>
                         <a id="miBoton" class="dropdown-item" href="<?= 'https://docs.google.com/spreadsheets/d/14-ok3uN6k5amV0ahY6m57mHx6veH1mpT_Td1gcfTS84/edit?usp=sharing' ?>" target="_blank">Generador de Base App Piendamo</a>
@@ -196,8 +195,6 @@ if (!$this->session->userdata('login')) {
                     </a>
                     
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a  id=miBoton  class="dropdown-item" href="<?= site_url('CBackup') ?>">Backup Paciente</a>
-                        <a  id=miBoton  class="dropdown-item" href="<?= site_url('CBackup/backup_pacActualizado') ?>">Backup Actualización Paciente</a>
                         <a  id=miBoton class="dropdown-item" href="<?= site_url('CBackup/backup_hc') ?>">Backup HC</a>
                     </div>
                 </li>

@@ -6,6 +6,8 @@ application/cache/*
 application/logs/*
 !application/logs/index.html
 
+application/sessions/*
+
 !application/*/.htaccess
 
 composer.lock
@@ -36,6 +38,8 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 
 # Variables de entorno con contraseñas reales
 .env
+application/config/config.php
+application/config/database.php
 
 # Datos y volúmenes de Docker (MySQL, etc)
 docker/mysql/data/
